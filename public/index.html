@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALCHEMY — Autonomous Scientific Research Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* ─── Variables ─────────────────────────────────────────── */
+:root {
+  --bg: #070b12;
+  --bg2: #0d1420;
+  --bg3: #111827;
+  --border: rgba(255,255,255,0.06);
+  --border-bright: rgba(255,255,255,0.12);
+  --text: #e2e8f0;
+  --text-dim: #64748b;
+  --text-muted: #334155;
+  --accent: #6366f1;
+  --green: #22c55e;
+  --red: #ef4444;
+  --amber: #f59e0b;
+  --cyan: #06b6d4;
+  --mono: 'Space Mono', monospace;
+  --sans: 'Syne', sans-serif;
+}
+
+/* ─── Reset & Base ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Starfield background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.12) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.08) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Header ────────────────────────────────────────────── */
+header {
+  position: relative;
+  padding: 28px 32px 24px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(99,102,241,0.04) 0%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.logo-block {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.logo {
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logo-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.api-status {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+.api-status.connected { border-color: rgba(34,197,94,0.3); color: #86efac; }
+.api-status.error { border-color: rgba(239,68,68,0.3); color: #fca5a5; }
+
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.status-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.status-dot.red { background: var(--red); box-shadow: 0 0 6px var(--red); }
+
+.hedera-badge {
+  font-size: 10px;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+}
+
+/* ─── Main Layout ────────────────────────────────────────── */
+.app-shell {
+  display: grid;
+  grid-template-columns: 300px 1fr 280px;
+  grid-template-rows: auto 1fr;
+  height: calc(100vh - 81px);
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Left Panel — Control ───────────────────────────────── */
+.left-panel {
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.control-section {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.control-section label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+textarea#research-topic {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border-bright);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 10px 12px;
+  resize: none;
+  height: 90px;
+  transition: border-color 0.2s;
+}
+
+textarea#research-topic:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.15);
+}
+
+.sample-topics {
+  margin-top: 10px;
+}
+
+.sample-topics-label {
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.sample-topic {
+  display: block;
+  font-size: 10px;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s;
+}
+
+.sample-topic:hover { color: var(--accent); }
+
+#run-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+#run-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+#run-btn:hover:not(:disabled)::after { opacity: 1; }
+#run-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(99,102,241,0.4); }
+#run-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.secondary-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--border-bright);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.secondary-btn:hover:not(:disabled) { border-color: var(--accent); }
+
+.meta-box {
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 10px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.meta-box strong { color: var(--text); }
+
+.control-input, .control-select {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border-bright);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 9px 10px;
+  margin-top: 10px;
+}
+
+.campaign-list {
+  max-height: 190px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg2);
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.campaign-card {
+  border-bottom: 1px solid var(--border);
+  padding: 8px 0;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.campaign-card:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.chat-log {
+  height: 180px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg2);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.chat-msg {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 10px;
+}
+
+.chat-msg:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.chat-role { color: var(--accent); font-size: 9px; letter-spacing: 1px; text-transform: uppercase; }
+.chat-content { color: var(--text-dim); margin-top: 4px; white-space: pre-wrap; }
+
+textarea#chat-input {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border-bright);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 10px 12px;
+  resize: none;
+  height: 72px;
+}
+
+/* Status Log */
+.status-log-section {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#status-log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.log-entry {
+  display: grid;
+  grid-template-columns: 60px 14px 1fr;
+  gap: 6px;
+  align-items: start;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+
+.log-time { color: var(--text-muted); }
+.log-icon { text-align: center; }
+.log-info .log-icon { color: var(--accent); }
+.log-success .log-icon { color: var(--green); }
+.log-error .log-icon { color: var(--red); }
+.log-hcs .log-icon { color: var(--cyan); }
+.log-msg { color: var(--text-dim); }
+.log-success .log-msg { color: #86efac; }
+.log-error .log-msg { color: #fca5a5; }
+
+/* ─── Center — Agents ────────────────────────────────────── */
+.center-panel {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tab bar */
+.agent-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  gap: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.agent-tab-btn {
+  flex-shrink: 0;
+  padding: 12px 14px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.agent-tab-btn:hover { color: var(--text); }
+.agent-tab-btn.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+.tab-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor; opacity: 0.5;
+  transition: opacity 0.2s, box-shadow 0.2s;
+}
+
+.agent-tab-btn.active .tab-dot { opacity: 1; }
+
+/* Agent Panels */
+.agent-panels {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.agent-panel {
+  display: none;
+  height: 100%;
+  flex-direction: column;
+}
+
+.agent-panel.active {
+  display: flex;
+}
+
+/* Agent Card */
+.agent-card {
+  margin: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  flex-shrink: 0;
+}
+
+.agent-card[data-status="running"] {
+  border-color: rgba(99,102,241,0.5);
+  box-shadow: 0 0 20px rgba(99,102,241,0.15);
+  animation: pulseCard 1.5s ease-in-out infinite;
+}
+
+.agent-card[data-status="done"] {
+  border-color: rgba(34,197,94,0.3);
+  box-shadow: 0 0 12px rgba(34,197,94,0.08);
+}
+
+.agent-card[data-status="error"] {
+  border-color: rgba(239,68,68,0.3);
+}
+
+@keyframes pulseCard {
+  0%, 100% { box-shadow: 0 0 12px rgba(99,102,241,0.15); }
+  50% { box-shadow: 0 0 24px rgba(99,102,241,0.3); }
+}
+
+.agent-card-header {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.agent-icon { font-size: 18px; }
+
+.agent-info { flex: 1; }
+
+.agent-name {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.agent-subtitle {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+
+.agent-indicator {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--text-muted);
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+
+.agent-indicator.running {
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: blink 1s infinite;
+}
+
+.agent-indicator.done { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.agent-indicator.error { background: var(--red); }
+
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* Agent ID bar */
+.agent-id-bar {
+  padding: 6px 18px;
+  background: var(--bg2);
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.agent-id-bar span { color: var(--text-dim); }
+
+/* Output area */
+.agent-output-wrapper {
+  flex: 1;
+  overflow: hidden;
+  margin: 0 16px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.output-header {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.output-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+}
+
+/* JSON syntax highlight */
+.json-output {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.json-key { color: #93c5fd; }
+.json-string { color: #86efac; }
+.json-number { color: #fbbf24; }
+.json-bool { color: #a78bfa; }
+.json-null { color: #94a3b8; }
+
+.waiting, .empty-state {
+  color: var(--text-muted);
+  font-size: 11px;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.error-msg {
+  color: #fca5a5;
+  font-size: 11px;
+  padding: 8px;
+  background: rgba(239,68,68,0.08);
+  border-radius: 4px;
+  border: 1px solid rgba(239,68,68,0.2);
+}
+
+/* ─── Right Panel — HCS + HOL ────────────────────────────── */
+.right-panel {
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.right-panel-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.right-panel-section + .right-panel-section {
+  border-top: 1px solid var(--border);
+}
+
+.right-panel-section .panel-header {
+  flex-shrink: 0;
+}
+
+.right-panel-section-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* HCS Messages */
+.hcs-message {
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg2);
+  animation: fadeIn 0.3s ease;
+}
+
+.hcs-msg-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.hcs-agent-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.hcs-action {
+  font-size: 9px;
+  color: var(--text-dim);
+  flex: 1;
+}
+
+.hcs-time {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.hcs-msg-id, .hcs-exp-id {
+  font-size: 8px;
+  color: var(--text-muted);
+  font-family: var(--mono);
+  word-break: break-all;
+}
+
+/* HOL Registry */
+.hol-agent {
+  padding: 10px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg2);
+  animation: fadeIn 0.3s ease;
+}
+
+.hol-agent-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.hol-agent-id {
+  font-size: 9px;
+  color: var(--text-dim);
+  word-break: break-all;
+}
+
+.hol-trust {
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.hol-rep-bar {
+  height: 3px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.hol-rep-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.hol-rep-score, .hol-contributions {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+/* ─── Pipeline Overview (below tabs) ─────────────────────── */
+.pipeline-overview {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pipeline-node {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.pipeline-node:hover { background: rgba(255,255,255,0.04); }
+
+.pipeline-circle {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.pipeline-label {
+  font-size: 8px;
+  color: var(--text-muted);
+  text-align: center;
+  letter-spacing: 0.5px;
+  max-width: 54px;
+}
+
+.pipeline-arrow {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  padding: 0 2px;
+  align-self: center;
+}
+
+/* Status indicators on pipeline */
+[data-status="running"] .pipeline-circle { animation: pulseCircle 1s infinite; }
+[data-status="done"] .pipeline-circle { box-shadow: 0 0 10px currentColor; }
+
+@keyframes pulseCircle {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ─── Success Modal ──────────────────────────────────────── */
+#success-modal {
+  position: fixed;
+  bottom: -100px;
+  right: 24px;
+  background: linear-gradient(135deg, var(--bg2), var(--bg3));
+  border: 1px solid rgba(34,197,94,0.3);
+  border-radius: 10px;
+  padding: 16px 20px;
+  z-index: 1000;
+  transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5), 0 0 20px rgba(34,197,94,0.1);
+  max-width: 280px;
+}
+
+#success-modal.visible { bottom: 24px; }
+
+.success-modal-title {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 14px;
+  color: #86efac;
+  margin-bottom: 4px;
+}
+
+.success-modal-body {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* ─── Scrollbars ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .app-shell { grid-template-columns: 260px 1fr; }
+  .right-panel { display: none; }
+}
+
+@media (max-width: 768px) {
+  .app-shell { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .left-panel { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo-block">
+    <div class="logo">ALCHEMY</div>
+    <div class="logo-sub">Autonomous Scientific Research Protocol</div>
+  </div>
+  <div class="header-right">
+    <div id="api-status" class="api-status">
+      <span class="status-dot"></span> Connecting...
+    </div>
+    <div class="hedera-badge">⬡ HOL / HASHGRAPH · Mistral AI</div>
+  </div>
+</header>
+
+<!-- App Shell -->
+<div class="app-shell">
+
+  <!-- ── Left Panel ──────────────────────────────────────── -->
+  <aside class="left-panel">
+    <div class="panel-header">◆ Experiment Control</div>
+
+    <div class="control-section">
+      <label>Research Topic</label>
+      <textarea id="research-topic" placeholder="Enter a research topic or hypothesis area...&#10;&#10;e.g. Low-rank adaptation in large language models"></textarea>
+
+      <div class="sample-topics">
+        <div class="sample-topics-label">Sample topics ↓</div>
+        <span class="sample-topic">Federated learning privacy preservation in medical imaging</span>
+        <span class="sample-topic">Attention mechanisms in vision transformers vs CNNs</span>
+        <span class="sample-topic">RLHF alignment in code generation models</span>
+        <span class="sample-topic">Graph neural networks for drug discovery</span>
+      </div>
+
+      <button id="run-btn">⚡ Run Experiment</button>
+    </div>
+
+    <div class="control-section">
+      <label>Agent Registration</label>
+      <div id="agent-card-meta" class="meta-box">Loading agent card...</div>
+      <button id="register-agent-btn" class="secondary-btn">Register Agent via HOL</button>
+    </div>
+
+    <div class="control-section">
+      <label>Natural Language Chat</label>
+      <div id="chat-log" class="chat-log">
+        <div class="empty-state">Start a conversation with the agent.</div>
+      </div>
+      <textarea id="chat-input" placeholder="Ask the agent about experiments, HCS-10 reachability, HOL registration, or how to use this dApp..."></textarea>
+      <button id="chat-send-btn" class="secondary-btn">Send Chat Message</button>
+    </div>
+
+    <div class="status-log-section">
+      <div class="panel-header">◆ Pipeline Log</div>
+      <div id="fundraising-controls" class="control-section">
+        <label>Funding Marketplace</label>
+        <div id="fundraising-meta" class="meta-box">Loading treasury and campaign status...</div>
+        <button id="create-campaign-btn" class="secondary-btn">Create Campaign From Fundraising</button>
+        <select id="campaign-id" class="control-select"></select>
+        <div id="campaign-list" class="campaign-list">
+          <div class="empty-state">No funding campaigns yet.</div>
+        </div>
+
+        <label style="margin-top:14px;">Investor Identity</label>
+        <input id="investor-account" class="control-input" placeholder="Hedera account ID, e.g. 0.0.12345">
+        <input id="investor-name" class="control-input" placeholder="Display name">
+        <input id="investor-alias" class="control-input" placeholder="Investor alias or HOL handle">
+        <select id="investor-risk" class="control-select">
+          <option value="balanced">Balanced</option>
+          <option value="conservative">Conservative</option>
+          <option value="aggressive">Aggressive</option>
+        </select>
+        <input id="wallet-provider" class="control-input" placeholder="Wallet provider, e.g. HashPack">
+        <button id="save-investor-btn" class="secondary-btn">Save Investor Profile</button>
+        <button id="match-campaigns-btn" class="secondary-btn">Match Investor To Campaigns</button>
+        <div id="match-results" class="meta-box">No campaign matches calculated yet.</div>
+
+        <label style="margin-top:14px;">Contribution Flow</label>
+        <input id="contribution-usd" class="control-input" placeholder="Contribution amount in USD">
+        <input id="contribution-txid" class="control-input" placeholder="Optional Hedera transaction ID for mirror-node verification">
+        <button id="contribution-intent-btn" class="secondary-btn">Generate Contribution Instructions</button>
+        <button id="record-contribution-btn" class="secondary-btn">Record Contribution</button>
+        <div id="contribution-meta" class="meta-box">Generate an intent to see treasury instructions and payment memo.</div>
+      </div>
+      <div id="status-log"></div>
+    </div>
+  </aside>
+
+  <!-- ── Center Panel ─────────────────────────────────────── -->
+  <main class="center-panel">
+
+    <!-- Pipeline Overview Bar -->
+    <div class="pipeline-overview">
+      <div class="pipeline-node" onclick="switchTab('hypothesis')" title="Hypothesis Agent">
+        <div class="pipeline-circle" style="border-color:#7c3aed;color:#7c3aed">🔬</div>
+        <div class="pipeline-label">Hypothesis</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node" onclick="switchTab('peerReview')" title="Peer Review Agent">
+        <div class="pipeline-circle" style="border-color:#c2410c;color:#c2410c">⚖️</div>
+        <div class="pipeline-label">Peer Review</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node" onclick="switchTab('fundraising')" title="Fundraising Agent">
+        <div class="pipeline-circle" style="border-color:#b45309;color:#b45309">💰</div>
+        <div class="pipeline-label">Fundraising</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node" onclick="switchTab('labor')" title="Labor Market Agent">
+        <div class="pipeline-circle" style="border-color:#0f766e;color:#0f766e">⚙️</div>
+        <div class="pipeline-label">Labor Market</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node" onclick="switchTab('results')" title="Results Agent">
+        <div class="pipeline-circle" style="border-color:#0369a1;color:#0369a1">📊</div>
+        <div class="pipeline-label">Results</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node" onclick="switchTab('replication')" title="Replication Agent">
+        <div class="pipeline-circle" style="border-color:#15803d;color:#15803d">🔄</div>
+        <div class="pipeline-label">Replication</div>
+      </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="agent-tabs">
+      <button class="agent-tab-btn active" data-agent="hypothesis">
+        <span class="tab-dot" style="color:#7c3aed"></span> Hypothesis
+      </button>
+      <button class="agent-tab-btn" data-agent="peerReview">
+        <span class="tab-dot" style="color:#c2410c"></span> Peer Review
+      </button>
+      <button class="agent-tab-btn" data-agent="fundraising">
+        <span class="tab-dot" style="color:#b45309"></span> Fundraising
+      </button>
+      <button class="agent-tab-btn" data-agent="labor">
+        <span class="tab-dot" style="color:#0f766e"></span> Labor Market
+      </button>
+      <button class="agent-tab-btn" data-agent="results">
+        <span class="tab-dot" style="color:#0369a1"></span> Results
+      </button>
+      <button class="agent-tab-btn" data-agent="replication">
+        <span class="tab-dot" style="color:#15803d"></span> Replication
+      </button>
+    </div>
+
+    <!-- Agent Panels -->
+    <div class="agent-panels">
+
+      <!-- Hypothesis Agent -->
+      <div class="agent-panel active" data-agent="hypothesis">
+        <div class="agent-card" id="card-hypothesis" data-status="idle">
+          <div class="agent-card-header" style="background:linear-gradient(90deg,rgba(124,58,237,0.1),transparent)">
+            <div class="agent-icon">🔬</div>
+            <div class="agent-info">
+              <div class="agent-name" style="color:#a78bfa">Hypothesis Agent</div>
+              <div class="agent-subtitle">Scans literature via MCP · Generates testable claims</div>
+            </div>
+            <div class="agent-indicator" id="ind-hypothesis"></div>
+          </div>
+          <div class="agent-id-bar">
+            ID: <span>hypothesis-agent-001</span> · Protocol: <span>HCS-10</span> · Registry: <span>hashgraph-online</span>
+          </div>
+        </div>
+        <div class="agent-output-wrapper">
+          <div class="output-header">⬡ HCS OUTPUT — HYPOTHESIS_GENERATED</div>
+          <div class="output-body" id="output-hypothesis">
+            <div class="waiting">Run an experiment to see the Hypothesis Agent output here.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Peer Review Agent -->
+      <div class="agent-panel" data-agent="peerReview">
+        <div class="agent-card" id="card-peerReview" data-status="idle">
+          <div class="agent-card-header" style="background:linear-gradient(90deg,rgba(194,65,12,0.1),transparent)">
+            <div class="agent-icon">⚖️</div>
+            <div class="agent-info">
+              <div class="agent-name" style="color:#fb923c">Peer Review Agent</div>
+              <div class="agent-subtitle">5-reviewer council · Attacks falsifiability</div>
+            </div>
+            <div class="agent-indicator" id="ind-peerReview"></div>
+          </div>
+          <div class="agent-id-bar">
+            ID: <span>peer-review-agent-001</span> · Protocol: <span>HCS-10</span> · Action: <span>REVIEW_COMPLETED</span>
+          </div>
+        </div>
+        <div class="agent-output-wrapper">
+          <div class="output-header">⬡ HCS OUTPUT — REVIEW_COMPLETED</div>
+          <div class="output-body" id="output-peerReview">
+            <div class="waiting">Waiting for Hypothesis Agent to complete...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fundraising Agent -->
+      <div class="agent-panel" data-agent="fundraising">
+        <div class="agent-card" id="card-fundraising" data-status="idle">
+          <div class="agent-card-header" style="background:linear-gradient(90deg,rgba(180,83,9,0.1),transparent)">
+            <div class="agent-icon">💰</div>
+            <div class="agent-info">
+              <div class="agent-name" style="color:#fbbf24">Fundraising Agent</div>
+              <div class="agent-subtitle">Opens capital pool on HTS · Simulates investors</div>
+            </div>
+            <div class="agent-indicator" id="ind-fundraising"></div>
+          </div>
+          <div class="agent-id-bar">
+            ID: <span>fundraising-agent-001</span> · Token: <span>EXP_TOKEN (HTS)</span> · Action: <span>FUNDING_DECISION</span>
+          </div>
+        </div>
+        <div class="agent-output-wrapper">
+          <div class="output-header">⬡ HTS OUTPUT — CAPITAL_POOL_OPENED</div>
+          <div class="output-body" id="output-fundraising">
+            <div class="waiting">Waiting for Peer Review to complete...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Labor Market Agent -->
+      <div class="agent-panel" data-agent="labor">
+        <div class="agent-card" id="card-labor" data-status="idle">
+          <div class="agent-card-header" style="background:linear-gradient(90deg,rgba(15,118,110,0.1),transparent)">
+            <div class="agent-icon">⚙️</div>
+            <div class="agent-info">
+              <div class="agent-name" style="color:#34d399">Labor Market Agent</div>
+              <div class="agent-subtitle">Posts XMTP bounties · Distributes EXP_TOKEN via HTS</div>
+            </div>
+            <div class="agent-indicator" id="ind-labor"></div>
+          </div>
+          <div class="agent-id-bar">
+            ID: <span>labor-agent-001</span> · Bounty: <span>EXP_TOKEN</span> · Action: <span>TASKS_PUBLISHED</span>
+          </div>
+        </div>
+        <div class="agent-output-wrapper">
+          <div class="output-header">⬡ HCS OUTPUT — TASKS_PUBLISHED</div>
+          <div class="output-body" id="output-labor">
+            <div class="waiting">Waiting for Fundraising to complete...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Agent -->
+      <div class="agent-panel" data-agent="results">
+        <div class="agent-card" id="card-results" data-status="idle">
+          <div class="agent-card-header" style="background:linear-gradient(90deg,rgba(3,105,161,0.1),transparent)">
+            <div class="agent-icon">📊</div>
+            <div class="agent-info">
+              <div class="agent-name" style="color:#38bdf8">Results Agent</div>
+              <div class="agent-subtitle">Archives to HCS · Mints verifiable publication NFT</div>
+            </div>
+            <div class="agent-indicator" id="ind-results"></div>
+          </div>
+          <div class="agent-id-bar">
+            ID: <span>results-agent-001</span> · NFT: <span>HTS Publication Token</span> · Action: <span>RESULT_PUBLISHED</span>
+          </div>
+        </div>
+        <div class="agent-output-wrapper">
+          <div class="output-header">⬡ HCS OUTPUT — RESULT_PUBLISHED + NFT_MINTED</div>
+          <div class="output-body" id="output-results">
+            <div class="waiting">Waiting for Labor Market to complete...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Replication Agent -->
+      <div class="agent-panel" data-agent="replication">
+        <div class="agent-card" id="card-replication" data-status="idle">
+          <div class="agent-card-header" style="background:linear-gradient(90deg,rgba(21,128,61,0.1),transparent)">
+            <div class="agent-icon">🔄</div>
+            <div class="agent-info">
+              <div class="agent-name" style="color:#4ade80">Replication Agent</div>
+              <div class="agent-subtitle">Verifies results · Scores publication NFT reputation</div>
+            </div>
+            <div class="agent-indicator" id="ind-replication"></div>
+          </div>
+          <div class="agent-id-bar">
+            ID: <span>replication-agent-001</span> · Token: <span>EXP_TOKEN</span> · Action: <span>REPLICATION_DONE</span>
+          </div>
+        </div>
+        <div class="agent-output-wrapper">
+          <div class="output-header">⬡ HCS OUTPUT — REPLICATION_DONE + NFT_REPUTATION_UPDATED</div>
+          <div class="output-body" id="output-replication">
+            <div class="waiting">Waiting for Results Agent to complete...</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /agent-panels -->
+  </main>
+
+  <!-- ── Right Panel ─────────────────────────────────────── -->
+  <aside class="right-panel">
+
+    <!-- HCS-10 Message Bus -->
+    <div class="right-panel-section">
+      <div class="panel-header">⬡ HCS-10 MESSAGE BUS</div>
+      <div class="right-panel-section-body" id="hcs-messages">
+        <div class="empty-state">No messages yet.</div>
+      </div>
+    </div>
+
+    <!-- HOL Registry -->
+    <div class="right-panel-section">
+      <div class="panel-header">🏛 HOL REGISTRY — Agent Identity</div>
+      <div class="right-panel-section-body" id="hol-agents">
+        <div class="empty-state">No agents registered yet.</div>
+      </div>
+    </div>
+
+  </aside>
+
+</div><!-- /app-shell -->
+
+<!-- Success Modal -->
+<div id="success-modal">
+  <div class="success-modal-title">✓ Experiment Complete</div>
+  <div class="success-modal-body">Results published to HCS. Publication NFT minted. Replication verified.</div>
+</div>
+
+<script src="agents.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

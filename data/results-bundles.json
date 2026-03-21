@@ -1,0 +1,79 @@
+[
+  [
+    "de52473956d0d62ede6b782febf53f079399bd8329911a955c7899cb490c8ddd",
+    {
+      "manifestJson": "{\n  \"experimentId\": \"EXP-RES-2\",\n  \"generatedAt\": \"2026-03-21T11:36:51.161Z\",\n  \"hypothesis\": \"Automated preprocessing improves report classification | Cleaner data and higher F1\",\n  \"tasks\": [\n    {\n      \"taskId\": \"task-prep-2\",\n      \"workerAccountId\": \"0.0.515151\",\n      \"resultSummary\": \"Normalized 97.2% of rows and emitted clean parquet\",\n      \"verification\": {\n        \"verdict\": \"APPROVED\",\n        \"notes\": \"Artifacts look consistent and meet success criteria\",\n        \"verifier\": \"labor-verifier-001\",\n        \"verifiedAt\": \"2026-03-21T11:36:27.237Z\"\n      },\n      \"payout\": {\n        \"amount\": 120,\n        \"asset\": \"EXP\",\n        \"workerAccountId\": \"0.0.515151\",\n        \"executedAt\": \"2026-03-21T11:36:27.238Z\",\n        \"mode\": \"simulated\",\n        \"transferred\": false,\n        \"reason\": \"HTS not fully configured\"\n      },\n      \"artifacts\": [\n        {\n          \"reference\": \"s3://demo/clean.parquet\",\n          \"kind\": \"inline\",\n          \"sha256\": \"89f8ce345fdb286336930be7fcd7795c74a4df7f63a13b3eb1195bdaaf0136cd\",\n          \"bytes\": 23,\n          \"accessible\": false\n        },\n        {\n          \"reference\": \"s3://demo/report.ipynb\",\n          \"kind\": \"inline\",\n          \"sha256\": \"75e8f40c67046da1dffb5d4826dc75648d86e8453c1bcfc33b54333d15dacaf1\",\n          \"bytes\": 22,\n          \"accessible\": false\n        }\n      ]\n    }\n  ],\n  \"resultSummary\": {\n    \"metrics\": {\n      \"accuracy\": null,\n      \"loss\": null,\n      \"improvement\": null\n    }\n  }\n}",
+      "signature": {
+        "algorithm": "sha256",
+        "signature": null,
+        "signer": "not-configured"
+      }
+    }
+  ],
+  [
+    "6fec7d6458e42ce385ba7be566ec1fc673953c79fbcba487492001d942672923",
+    {
+      "manifestJson": "{\n  \"experimentId\": \"EXP-1774109671642-FAROCZ\",\n  \"generatedAt\": \"2026-03-21T16:16:58.170Z\",\n  \"hypothesis\": \"Vision Transformers (ViTs) encode concepts with higher semantic diversity but lower spatial precision at intermediate layers compared to CNNs, leading to measurable differences in transfer learning performance for fine-grained classification tasks. | ViTs will exhibit 15-25% higher semantic diversity in intermediate layers (e.g., layers 4-8) but 10-20% lower spatial precision compared to CNNs, as measured by neuron labeling and Grad-CAM localization error. This trade-off will correlate with a 5-10% drop in transfer learning accuracy for fine-grained tasks (e.g., CUB-200) when using intermediate-layer features from ViTs vs. CNNs. | Train ViT-B/16 and ResNet-50 on ImageNet-1K, then freeze intermediate layers and fine-tune on fine-grained datasets. Use neuron labeling (Paper 1) to quantify concept diversity and Grad-CAM to measure spatial precision. Compare transfer learning performance across layers. | Semantic diversity (concept count per layer), spatial precision (Grad-CAM localization error in pixels), transfer learning accuracy (%) on CUB-200 and iNaturalist datasets\",\n  \"tasks\": [],\n  \"resultSummary\": {\n    \"finalStatus\": \"FAILURE\",\n    \"validation\": {\n      \"status\": \"INVALID\",\n      \"issues\": [\n        \"No tasks have been approved (0/6 completed).\",\n        \"Task T6 failed and T5 is still in progress, preventing full validation.\",\n        \"No computed metrics available for evaluation.\",\n        \"Missing critical outputs for semantic diversity, spatial precision, and transfer learning accuracy.\"\n      ]\n    },\n    \"metrics\": {\n      \"accuracy\": \"N/A\",\n      \"loss\": \"N/A\",\n      \"improvement\": \"N/A\"\n    },\n    \"consistency\": {\n      \"status\": \"INCONSISTENT\",\n      \"details\": \"Cannot assess consistency due to missing task outputs. No data available to compare against the hypothesis.\"\n    },\n    \"anomalies\": [\n      \"No task outputs to analyze for anomalies.\",\n      \"Experiment execution incomplete (T5 in progress, T6 failed).\"\n    ]\n  }\n}",
+      "signature": {
+        "algorithm": "sha256",
+        "signature": null,
+        "signer": "signature-failed"
+      }
+    }
+  ],
+  [
+    "778b9d0997ea8b4e52fc276bd43aac2df9b06e42913d468da42e3edd0ed2282e",
+    {
+      "manifestJson": "{\n  \"experimentId\": \"EXP-1774110191910-FD5TGR\",\n  \"generatedAt\": \"2026-03-21T16:25:29.584Z\",\n  \"hypothesis\": \"Applying differential privacy with adaptive noise scaling to federated learning for 3D medical imaging (e.g., MRI segmentation) will preserve model utility (Dice score) within 5% of non-private baselines while reducing the success rate of membership inference attacks by at least 30% compared to fixed-noise DP. | Adaptive noise scaling will maintain Dice scores within 5% of non-private FL models while reducing membership inference attack success rates by ≥30% for ε ≤ 5. | FL setup with 10 clients, each holding 3D MRI scans from the BraTS dataset. Train a U-Net model for tumor segmentation using FedAvg with DP-SGD. Compare adaptive noise (scaled by gradient magnitude) vs. fixed noise across ε values. | Dice score for segmentation accuracy; attack success rate (ASR) for membership inference attacks.\",\n  \"tasks\": [],\n  \"resultSummary\": {\n    \"finalStatus\": \"FAILURE\",\n    \"validation\": {\n      \"status\": \"INVALID\",\n      \"issues\": [\n        \"No tasks approved (0/6 completed).\",\n        \"Missing critical outputs for metric evaluation (Dice score, ASR).\",\n        \"Failed task TASK_005 (likely privacy attack simulation).\",\n        \"Incomplete task TASK_004 (ongoing FL training).\"\n      ]\n    },\n    \"metrics\": {\n      \"accuracy\": \"N/A\",\n      \"loss\": \"N/A\",\n      \"improvement\": \"N/A\"\n    },\n    \"consistency\": {\n      \"status\": \"INCONSISTENT\",\n      \"details\": \"No results to compare against hypothesis. Expected Dice scores and ASR metrics are missing.\"\n    },\n    \"anomalies\": [\n      {\n        \"type\": \"MISSING_DATA\",\n        \"description\": \"No outputs from completed tasks (TASK_001-TASK_003) were provided in the verified artifact summary.\",\n        \"severity\": \"CRITICAL\"\n      }\n    ]\n  }\n}",
+      "signature": {
+        "algorithm": "sha256",
+        "signature": null,
+        "signer": "signature-failed"
+      }
+    }
+  ],
+  [
+    "ad377808f69b779f5a0d01e86c619a50112472bf187f00cfa216ca47a17d1b56",
+    {
+      "manifestJson": "{\n  \"experimentId\": \"EXP-1774114936739-2UYOYB\",\n  \"generatedAt\": \"2026-03-21T17:44:26.459Z\",\n  \"hypothesis\": \"Applying differential privacy with adaptive noise scaling to federated learning for 3D medical imaging (e.g., MRI or CT scans) will preserve diagnostic utility (measured by Dice similarity coefficient) while maintaining a privacy budget (ε ≤ 5) comparable to 2D imaging tasks. | Adaptive noise scaling will achieve a 10-15% higher Dice similarity coefficient than fixed noise scaling for 3D images, with ε ≤ 5 in both cases. | Train a federated U-Net model on a distributed dataset of 3D MRI scans (e.g., BraTS or private clinical data) with adaptive and fixed DP noise. Compare segmentation performance and privacy budget across conditions. | Dice similarity coefficient for segmentation tasks, privacy budget (ε) for differential privacy.\",\n  \"tasks\": [],\n  \"resultSummary\": {\n    \"finalStatus\": \"FAILURE\",\n    \"validation\": {\n      \"status\": \"INVALID\",\n      \"issues\": [\n        \"Insufficient tasks completed (0/7) for result validation\",\n        \"No computed metrics available for evaluation\",\n        \"No task outputs provided for consistency or anomaly checks\",\n        \"Experiment execution incomplete (TASK-005 in progress)\"\n      ]\n    },\n    \"metrics\": {\n      \"accuracy\": \"N/A\",\n      \"loss\": \"N/A\",\n      \"improvement\": \"N/A\"\n    },\n    \"consistency\": {\n      \"status\": \"INCONSISTENT\",\n      \"details\": \"Cannot assess consistency due to missing task outputs and incomplete execution\"\n    },\n    \"anomalies\": [\n      {\n        \"type\": \"EXECUTION_INCOMPLETE\",\n        \"description\": \"Experiment terminated with 1 task still in progress (TASK-005)\",\n        \"severity\": \"CRITICAL\"\n      },\n      {\n        \"type\": \"DATA_UNAVAILABLE\",\n        \"description\": \"No task outputs or metrics provided for validation\",\n        \"severity\": \"CRITICAL\"\n      }\n    ]\n  }\n}",
+      "signature": {
+        "algorithm": "sha256",
+        "signature": null,
+        "signer": "signature-failed"
+      }
+    }
+  ],
+  [
+    "b5f19d8d896a2192589b33081ddf5ad8dec80147d46a20b0b52dc9b2a0498764",
+    {
+      "manifestJson": "{\n  \"experimentId\": \"EXP-1774115092629-6H643Y\",\n  \"generatedAt\": \"2026-03-21T17:46:49.494Z\",\n  \"hypothesis\": \"Assuming 'w' represents neural network weights, initializing 'w' using a hybrid distribution (e.g., uniform for small values and Gaussian for large values) will reduce training time by 15-20% compared to standard Gaussian initialization, without degrading final model accuracy (uncertain due to lack of prior evidence). | Hybrid initialization will achieve faster convergence (15-20% fewer epochs) while maintaining or improving accuracy within ±1% of baseline. | Train ResNet-18 and Transformer models on CIFAR-10 and IMDB datasets with three initialization strategies. Use identical hyperparameters (learning rate, batch size, optimizer) across all runs. | Number of epochs to reach 95% of baseline accuracy; final test accuracy (%)\",\n  \"tasks\": [],\n  \"resultSummary\": {\n    \"finalStatus\": \"FAILURE\",\n    \"validation\": {\n      \"status\": \"INVALID\",\n      \"issues\": [\n        \"No tasks approved for result collection (0/7 completed).\",\n        \"Failed task TASK-5 may contain critical validation data (e.g., consistency checks or anomaly detection).\",\n        \"In-progress tasks TASK-6 and TASK-7 are required for metric evaluation and reward distribution.\",\n        \"No computed metrics available in verified artifact summary.\"\n      ]\n    },\n    \"metrics\": {\n      \"accuracy\": \"N/A\",\n      \"loss\": \"N/A\",\n      \"improvement\": \"N/A\"\n    },\n    \"consistency\": {\n      \"status\": \"INCONSISTENT\",\n      \"details\": \"Cannot assess consistency due to missing task outputs. Hypothesis validation requires comparison of hybrid, Gaussian, and uniform initialization strategies across ResNet-18 and Transformer models.\"\n    },\n    \"anomalies\": [\n      {\n        \"type\": \"SYSTEMIC\",\n        \"description\": \"Zero approved tasks despite 4 completed tasks. Possible pipeline failure in task validation or artifact submission.\",\n        \"severity\": \"CRITICAL\"\n      }\n    ]\n  }\n}",
+      "signature": {
+        "algorithm": "sha256",
+        "signature": null,
+        "signer": "signature-failed"
+      }
+    }
+  ],
+  [
+    "6387eca6c3e294cb53a1b8825679d98b3ceec91bff90811ed78e24eef73767bf",
+    {
+      "manifestJson": "{\n  \"experimentId\": \"EXP-1774121892298-AVW0V7\",\n  \"generatedAt\": \"2026-03-21T19:40:09.761Z\",\n  \"hypothesis\": \"Heterogeneous ensembles (e.g., combining CNNs, Transformers, and Gradient Boosting models) will outperform homogeneous ensembles (e.g., multiple instances of the same model architecture) on high-dimensional, sparse datasets, as measured by classification accuracy and F1-score, due to increased model diversity capturing complementary feature representations. | Heterogeneous ensembles will achieve at least 5% higher accuracy and F1-score compared to homogeneous ensembles on high-dimensional datasets (e.g., genomics or NLP embeddings). | Train and evaluate homogeneous and heterogeneous ensembles on benchmark high-dimensional datasets (e.g., TCGA for genomics, GLUE for NLP). Use cross-validation and hold-out test sets to measure performance. Include adversarial noise to test robustness. | Accuracy, F1-score, and area under the ROC curve (AUC).\",\n  \"tasks\": [],\n  \"resultSummary\": {\n    \"finalStatus\": \"FAILURE\",\n    \"validation\": {\n      \"status\": \"INVALID\",\n      \"issues\": [\n        \"No tasks have been approved (0/7 completed).\",\n        \"No computed metrics available for evaluation.\",\n        \"Execution summary indicates TASK-007 is still in progress, preventing full validation.\",\n        \"No verified task outputs to validate against the hypothesis.\"\n      ]\n    },\n    \"metrics\": {\n      \"accuracy\": \"N/A\",\n      \"loss\": \"N/A\",\n      \"improvement\": \"N/A\"\n    },\n    \"consistency\": {\n      \"status\": \"INCONSISTENT\",\n      \"details\": \"Cannot assess consistency due to absence of validated results. No comparison possible with the hypothesis or baseline.\"\n    },\n    \"anomalies\": [\n      \"No task outputs available for anomaly detection.\",\n      \"Missing critical performance metrics (accuracy, F1-score, AUC).\"\n    ]\n  }\n}",
+      "signature": {
+        "algorithm": "sha256",
+        "signature": null,
+        "signer": "signature-failed"
+      }
+    }
+  ],
+  [
+    "a1174bb9c87abd168a7b7cf91e950adbf998e4fd99ee73857db5cde4697cc267",
+    {
+      "manifestJson": "{\n  \"experimentId\": \"EXP-1774123790793-558OPA\",\n  \"generatedAt\": \"2026-03-21T20:12:05.337Z\",\n  \"hypothesis\": \"Heterogeneous ensemble models (e.g., combining logistic regression, random forest, and gradient boosting) will outperform homogeneous ensembles (e.g., multiple random forests) in credit scoring tasks when trained on class-imbalanced datasets, as measured by AUC-ROC and F1-score. | Heterogeneous ensembles will achieve at least 3-5% higher AUC-ROC and F1-score compared to homogeneous ensembles under severe class imbalance (e.g., 99:1). | Train and evaluate homogeneous (e.g., 5x random forest) and heterogeneous (e.g., logistic regression + random forest + XGBoost) ensembles on public credit scoring datasets (e.g., German Credit Data, Home Equity Line of Credit (HELOC)) with synthetically induced class imbalance. Use 5-fold cross-validation and repeat experiments 10 times for statistical significance. | AUC-ROC, F1-score, precision-recall curves.\",\n  \"tasks\": [],\n  \"resultSummary\": {\n    \"finalStatus\": \"FAILURE\",\n    \"validation\": {\n      \"status\": \"INVALID\",\n      \"issues\": [\n        \"No tasks marked as approved (0/7).\",\n        \"Critical task TASK_006 failed, preventing metric computation.\",\n        \"TASK_005 remains in progress, blocking result aggregation.\",\n        \"No computed metrics available for validation.\",\n        \"Output formats and completeness cannot be verified due to missing data.\"\n      ]\n    },\n    \"metrics\": {\n      \"accuracy\": \"N/A\",\n      \"loss\": \"N/A\",\n      \"improvement\": \"N/A\"\n    },\n    \"consistency\": {\n      \"status\": \"INCONSISTENT\",\n      \"details\": \"No results to evaluate consistency. Hypothesis cannot be tested without completed tasks.\"\n    },\n    \"anomalies\": [\n      {\n        \"type\": \"SYSTEMIC\",\n        \"description\": \"Zero approved tasks despite execution summary indicating partial completion.\",\n        \"severity\": \"CRITICAL\"\n      },\n      {\n        \"type\": \"PROCEDURAL\",\n        \"description\": \"Failed task TASK_006 likely involved metric computation or validation steps.\",\n        \"severity\": \"HIGH\"\n      }\n    ]\n  }\n}",
+      "signature": {
+        "algorithm": "ed25519",
+        "signature": "1f694f1554fc163366009ffe8ffd4d1cb291d6aeb0b365d46205d22be48a744017e8695d8efac4b247a35bdf73504a9c4d3254f0e5d03e8d98261e38c5b7374b",
+        "signer": "0.0.8320076"
+      }
+    }
+  ]
+]
