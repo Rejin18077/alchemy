@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const sqlite3 = require('sqlite3');
+const Database = require("better-sqlite3");
 
 let db = null;
 let context = null;
@@ -47,7 +47,7 @@ function promisifyAll(database, sql, params = []) {
 
 function openDatabase(filename) {
   return new Promise((resolve, reject) => {
-    const database = new sqlite3.Database(filename, (err) => {
+    const database = new Database(filename, (err) => {
       if (err) {
         reject(err);
         return;
@@ -218,7 +218,7 @@ function startDatabaseAutosave(intervalMs = 2000) {
   }
 
   autosaveTimer = setInterval(() => {
-    flushDatabaseState().catch(() => {});
+    flushDatabaseState().catch(() => { });
   }, intervalMs);
   autosaveTimer.unref?.();
 }
