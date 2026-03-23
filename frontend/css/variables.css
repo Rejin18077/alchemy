@@ -1,20 +1,72 @@
 /* ─── Variables & Theme ─────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 :root {
-  --bg: #070b12;
-  --bg2: #0d1420;
-  --bg3: #111827;
-  --border: rgba(255,255,255,0.06);
-  --border-bright: rgba(255,255,255,0.12);
-  --text: #e2e8f0;
-  --text-dim: #64748b;
-  --text-muted: #334155;
-  --accent: #6366f1;
-  --green: #22c55e;
-  --red: #ef4444;
-  --amber: #f59e0b;
-  --cyan: #06b6d4;
-  --mono: 'Space Mono', monospace;
-  --sans: 'Syne', sans-serif;
+  /* ── Deep Space Palette ── */
+  --bg:            #060812;
+  --bg2:           #0b0f1e;
+  --bg3:           #0f1428;
+  --bg4:           #141932;
+  --bg5:           #1a2040;
+
+  /* ── Glass surfaces ── */
+  --glass-1: rgba(15, 20, 40, 0.7);
+  --glass-2: rgba(20, 25, 50, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-border-hover: rgba(255, 255, 255, 0.12);
+
+  /* ── Borders ── */
+  --border:        rgba(255,255,255,0.05);
+  --border-soft:   rgba(255,255,255,0.08);
+  --border-bright: rgba(255,255,255,0.15);
+
+  /* ── Typography ── */
+  --text:          #eef0f8;
+  --text-dim:      #7a85a8;
+  --text-muted:    #2e3654;
+  --text-sub:      #4a5278;
+
+  /* ── Accent — Electric Violet → Indigo ── */
+  --accent:        #7c6fff;
+  --accent-2:      #5a4fe0;
+  --accent-light:  #a99fff;
+  --accent-glow:   rgba(124, 111, 255, 0.3);
+  --accent-glow-sm:rgba(124, 111, 255, 0.15);
+  --accent-grad:   linear-gradient(135deg, #7c6fff 0%, #a855f7 100%);
+
+  /* ── Semantic colors ── */
+  --green:         #10d97f;
+  --green-glow:    rgba(16, 217, 127, 0.2);
+  --red:           #ff4d6a;
+  --red-glow:      rgba(255, 77, 106, 0.2);
+  --amber:         #ffb547;
+  --cyan:          #22d3ee;
+  --cyan-glow:     rgba(34, 211, 238, 0.2);
+  --purple:        #c084fc;
+  --pink:          #f472b6;
+
+  /* ── Typography ── */
+  --font-ui:   'Space Grotesk', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Backwards compat */
+  --mono: var(--font-mono);
+  --sans: var(--font-ui);
+
+  /* ── Radius ── */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+
+  /* ── Shadows ── */
+  --shadow-sm:   0 1px 6px rgba(0,0,0,0.4);
+  --shadow-md:   0 4px 24px rgba(0,0,0,0.5);
+  --shadow-lg:   0 12px 48px rgba(0,0,0,0.6);
+  --shadow-glow: 0 0 40px rgba(124,111,255,0.15);
+  --shadow-card: 0 2px 20px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04);
 }
 
 /* ─── Reset & Base ──────────────────────────────────────── */
@@ -24,23 +76,42 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--mono);
+  font-family: var(--font-body);
   font-size: 13px;
-  line-height: 1.6;
+  line-height: 1.65;
   min-height: 100vh;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Starfield background */
+/* ── Layered atmospheric background ── */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
+  background:
+    radial-gradient(ellipse 90% 70% at -5% -15%, rgba(124,111,255,0.09) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 110% 115%, rgba(34,211,238,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(168,85,247,0.04) 0%, transparent 55%),
+    radial-gradient(ellipse 30% 25% at 80% 10%, rgba(244,114,182,0.03) 0%, transparent 45%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Star field ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
   background-image:
-    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 100%),
-    radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.12) 0%, transparent 100%),
-    radial-gradient(1px 1px at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 100%),
-    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.08) 0%, transparent 100%);
+    radial-gradient(1.5px 1.5px at 12% 18%, rgba(255,255,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 72%, rgba(255,255,255,0.16) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 68% 14%, rgba(255,255,255,0.18) 0%, transparent 100%),
+    radial-gradient(1px 1px at 82% 58%, rgba(255,255,255,0.12) 0%, transparent 100%),
+    radial-gradient(1px 1px at 33% 88%, rgba(255,255,255,0.14) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 32%, rgba(255,255,255,0.10) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 23% 45%, rgba(255,255,255,0.08) 0%, transparent 100%);
   pointer-events: none;
   z-index: 0;
 }
@@ -48,4 +119,8 @@ body::before {
 /* ─── Scrollbars ────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: rgba(124,111,255,0.2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(124,111,255,0.4); }
+
+/* ─── Selection ─────────────────────────────────────────── */
+::selection { background: rgba(124,111,255,0.3); color: #fff; }

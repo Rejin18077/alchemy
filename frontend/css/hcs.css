@@ -1,43 +1,64 @@
 /* ─── HCS Messages ───────────────────────────────────────── */
 .hcs-message {
-  padding: 8px 10px;
-  margin-bottom: 6px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg2);
-  animation: fadeIn 0.3s ease;
+  padding: 10px 13px;
+  margin-bottom: 8px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  background: rgba(11, 15, 30, 0.65);
+  animation: fadeIn 0.28s ease;
+  transition: border-color 0.2s, background 0.2s;
+  backdrop-filter: blur(8px);
 }
-
-.hcs-message.inbound { border-left: 2px solid var(--cyan); }
-.hcs-message.outbound { border-left: 2px solid rgba(99,102,241,0.5); }
+.hcs-message:hover {
+  border-color: var(--glass-border-hover);
+  background: rgba(15, 20, 42, 0.7);
+}
+.hcs-message.inbound  {
+  border-left: 2px solid var(--cyan);
+  box-shadow: -2px 0 10px rgba(34,211,238,0.06);
+}
+.hcs-message.outbound {
+  border-left: 2px solid rgba(124,111,255,0.5);
+  box-shadow: -2px 0 10px rgba(124,111,255,0.06);
+}
 
 .hcs-msg-header {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   margin-bottom: 4px;
   flex-wrap: wrap;
 }
 
 .hcs-direction-badge {
-  font-size: 8px;
-  padding: 1px 5px;
-  border-radius: 3px;
+  font-size: 7.5px;
+  font-family: var(--font-ui);
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
   font-weight: 700;
   flex-shrink: 0;
+  letter-spacing: 0.8px;
 }
-.hcs-direction-badge.in { background: rgba(6,182,212,0.15); color: var(--cyan); }
-.hcs-direction-badge.out { background: rgba(99,102,241,0.12); color: var(--accent); }
+.hcs-direction-badge.in  {
+  background: rgba(34,211,238,0.1);
+  color: var(--cyan);
+  border: 1px solid rgba(34,211,238,0.15);
+}
+.hcs-direction-badge.out {
+  background: rgba(124,111,255,0.1);
+  color: var(--accent-light);
+  border: 1px solid rgba(124,111,255,0.15);
+}
 
 .hcs-agent-badge {
-  font-size: 9px;
+  font-size: 9.5px;
+  font-family: var(--font-ui);
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
 
-.hcs-action { font-size: 9px; color: var(--text-dim); flex: 1; }
+.hcs-action { font-size: 9px; font-family: var(--font-body); color: var(--text-dim); flex: 1; }
 
-/* Plain-English translation of action type */
 .hcs-action-label {
   font-size: 8px;
   color: var(--amber);
@@ -45,43 +66,104 @@
   margin-left: 4px;
 }
 
-.hcs-time { font-size: 9px; color: var(--text-muted); }
+.hcs-time {
+  font-size: 8px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  margin-left: auto;
+}
 
 .hcs-msg-id, .hcs-exp-id {
   font-size: 8px;
+  font-family: var(--font-mono);
   color: var(--text-muted);
-  font-family: var(--mono);
   word-break: break-all;
-  margin-top: 2px;
+  margin-top: 4px;
+  line-height: 1.6;
 }
 
 /* ─── HOL Registry ───────────────────────────────────────── */
 .hol-agent {
-  padding: 10px;
-  margin-bottom: 8px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg2);
-  animation: fadeIn 0.3s ease;
+  padding: 12px 14px;
+  margin-bottom: 9px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  background: rgba(11, 15, 30, 0.65);
+  animation: fadeIn 0.28s ease;
+  transition: border-color 0.2s, background 0.2s;
+  backdrop-filter: blur(8px);
+}
+.hol-agent:hover {
+  border-color: var(--glass-border-hover);
+  background: rgba(15, 20, 42, 0.7);
 }
 
-.hol-agent-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.hol-agent-id { font-size: 9px; color: var(--text-dim); word-break: break-all; }
-.hol-trust { font-size: 9px; font-weight: 700; }
+.hol-agent-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 9px;
+}
+.hol-agent-id {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  word-break: break-all;
+  line-height: 1.5;
+}
+.hol-trust {
+  font-size: 9px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+}
 
-.hol-rep-bar { height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden; margin-bottom: 5px; }
-.hol-rep-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
-.hol-rep-score, .hol-contributions { font-size: 9px; color: var(--text-muted); }
+.hol-rep-bar {
+  height: 3px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 7px;
+}
+.hol-rep-fill  { height: 100%; border-radius: 3px; transition: width 0.7s cubic-bezier(0.4,0,0.2,1); }
+.hol-rep-score, .hol-contributions {
+  font-size: 9px;
+  font-family: var(--font-body);
+  color: var(--text-muted);
+}
 
 /* ─── Discovered Agents ──────────────────────────────────── */
 .discovered-agent {
-  padding: 8px 10px;
-  margin-bottom: 6px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg2);
-  animation: fadeIn 0.3s ease;
+  padding: 10px 13px;
+  margin-bottom: 8px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  background: rgba(11, 15, 30, 0.65);
+  animation: fadeIn 0.28s ease;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
 }
-.discovered-agent-name { font-size: 10px; color: var(--text); margin-bottom: 3px; }
-.discovered-agent-meta { font-size: 9px; color: var(--text-muted); }
-.discovered-agent-caps { font-size: 8px; color: var(--cyan); margin-top: 3px; }
+.discovered-agent:hover {
+  border-color: rgba(124,111,255,0.25);
+  background: rgba(124,111,255,0.04);
+  transform: translateX(2px);
+}
+.discovered-agent-name {
+  font-size: 10.5px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.discovered-agent-meta {
+  font-size: 9px;
+  font-family: var(--font-body);
+  color: var(--text-muted);
+}
+.discovered-agent-caps {
+  font-size: 8px;
+  font-family: var(--font-mono);
+  color: var(--cyan);
+  margin-top: 5px;
+  letter-spacing: 0.5px;
+}

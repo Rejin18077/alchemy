@@ -6,7 +6,8 @@
 <title>ALCHEMY — Autonomous Scientific Research Protocol on Hedera</title>
 <meta name="description" content="ALCHEMY is an AI-native autonomous scientific research protocol powered by Hedera HCS, HTS, and the HOL Registry Broker.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/variables.css">
 <link rel="stylesheet" href="css/animations.css">
 <link rel="stylesheet" href="css/layout.css">
@@ -40,13 +41,14 @@
   <!-- ── Left Panel — Experiment Control ───────────────────── -->
   <aside class="left-panel">
     <div class="panel-header">◆ Experiment Control</div>
+    <div class="left-panel-scroll">
 
     <!-- Research Topic -->
     <div class="control-section">
       <label>Research Topic</label>
       <textarea id="research-topic" placeholder="Enter a research topic or hypothesis area...&#10;&#10;e.g. Low-rank adaptation in large language models"></textarea>
       <div class="sample-topics">
-        <div class="sample-topics-label">Sample topics ↓</div>
+        <div class="sample-topics-label">Sample topics</div>
         <span class="sample-topic">Federated learning privacy preservation in medical imaging</span>
         <span class="sample-topic">Attention mechanisms in vision transformers vs CNNs</span>
         <span class="sample-topic">RLHF alignment in code generation models</span>
@@ -72,39 +74,48 @@
       <button id="chat-send-btn" class="secondary-btn">Send Message</button>
     </div>
 
-    <!-- Fundraising & Status Log -->
+    <!-- Funding Marketplace -->
+    <div class="section-divider">◆ Funding Marketplace</div>
+    <div id="fundraising-controls" class="control-section">
+      <label>Campaign Status</label>
+      <div id="fundraising-meta" class="meta-box">Loading treasury and campaign status...</div>
+      <button id="create-campaign-btn" class="secondary-btn">Create Campaign From Fundraising</button>
+      <select id="campaign-id" class="control-select"></select>
+      <div id="campaign-list" class="campaign-list">
+        <div class="empty-state">No funding campaigns yet.</div>
+      </div>
+    </div>
+
+    <div class="control-section">
+      <label>Investor Identity</label>
+      <input id="investor-account" class="control-input" placeholder="Hedera account ID (e.g. 0.0.12345)">
+      <input id="investor-name" class="control-input" placeholder="Display name">
+      <input id="investor-alias" class="control-input" placeholder="Investor alias or HOL handle">
+      <select id="investor-risk" class="control-select">
+        <option value="balanced">Risk: Balanced</option>
+        <option value="conservative">Risk: Conservative</option>
+        <option value="aggressive">Risk: Aggressive</option>
+      </select>
+      <input id="wallet-provider" class="control-input" placeholder="Wallet provider (e.g. HashPack)">
+      <button id="save-investor-btn" class="secondary-btn">Save Investor Profile</button>
+      <button id="match-campaigns-btn" class="secondary-btn">Match Investor To Campaigns</button>
+      <div id="match-results" class="meta-box">No campaign matches calculated yet.</div>
+    </div>
+
+    <div class="control-section">
+      <label>Contribution Flow</label>
+      <input id="contribution-usd" class="control-input" placeholder="Contribution amount in USD">
+      <input id="contribution-txid" class="control-input" placeholder="Optional Hedera transaction ID">
+      <button id="contribution-intent-btn" class="secondary-btn">Generate Contribution Instructions</button>
+      <button id="record-contribution-btn" class="secondary-btn">Record Contribution</button>
+      <div id="contribution-meta" class="meta-box">Generate an intent to see treasury instructions.</div>
+    </div>
+
+    </div><!-- /left-panel-scroll -->
+
+    <!-- Pipeline Log -->
     <div class="status-log-section">
       <div class="panel-header">◆ Pipeline Log</div>
-      <div id="fundraising-controls" class="control-section">
-        <label>Funding Marketplace</label>
-        <div id="fundraising-meta" class="meta-box">Loading treasury and campaign status...</div>
-        <button id="create-campaign-btn" class="secondary-btn">Create Campaign From Fundraising</button>
-        <select id="campaign-id" class="control-select"></select>
-        <div id="campaign-list" class="campaign-list">
-          <div class="empty-state">No funding campaigns yet.</div>
-        </div>
-
-        <label style="margin-top:12px;">Investor Identity</label>
-        <input id="investor-account" class="control-input" placeholder="Hedera account ID, e.g. 0.0.12345">
-        <input id="investor-name" class="control-input" placeholder="Display name">
-        <input id="investor-alias" class="control-input" placeholder="Investor alias or HOL handle">
-        <select id="investor-risk" class="control-select">
-          <option value="balanced">Balanced</option>
-          <option value="conservative">Conservative</option>
-          <option value="aggressive">Aggressive</option>
-        </select>
-        <input id="wallet-provider" class="control-input" placeholder="Wallet provider, e.g. HashPack">
-        <button id="save-investor-btn" class="secondary-btn">Save Investor Profile</button>
-        <button id="match-campaigns-btn" class="secondary-btn">Match Investor To Campaigns</button>
-        <div id="match-results" class="meta-box">No campaign matches calculated yet.</div>
-
-        <label style="margin-top:12px;">Contribution Flow</label>
-        <input id="contribution-usd" class="control-input" placeholder="Contribution amount in USD">
-        <input id="contribution-txid" class="control-input" placeholder="Optional Hedera transaction ID">
-        <button id="contribution-intent-btn" class="secondary-btn">Generate Contribution Instructions</button>
-        <button id="record-contribution-btn" class="secondary-btn">Record Contribution</button>
-        <div id="contribution-meta" class="meta-box">Generate an intent to see treasury instructions.</div>
-      </div>
       <div id="status-log"></div>
     </div>
   </aside>
