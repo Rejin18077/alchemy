@@ -501,5 +501,55 @@
     },
     "payoutExecutions": [],
     "publishedAt": "2026-03-22T18:38:04.014Z"
+  },
+  {
+    "experimentId": "EXP-1774299016091-NPGUQY",
+    "manifestHash": "0f8d1081e0f0a9c00b3d8df67eebc7b703d31fadfd9dac70901cb3147df607cd",
+    "manifest": {
+      "experimentId": "EXP-1774299016091-NPGUQY",
+      "generatedAt": "2026-03-23T20:53:06.592Z",
+      "hypothesis": "Applying differential privacy with gradient clipping and Gaussian noise addition to federated learning models trained on high-resolution 3D medical scans (e.g., MRI) will degrade model utility (measured by Dice similarity coefficient) by less than 10% compared to non-private FL, while ensuring provable privacy guarantees (ε ≤ 5, δ ≤ 1e-5). | Model utility degradation will remain below 10% for noise scales σ ≤ 0.1 and clipping thresholds C ≤ 0.01, with privacy budgets meeting ε ≤ 5. | Train a 3D U-Net model on federated MRI datasets (e.g., BraTS 2021) using FedAvg with DP-SGD. Vary σ (0.01 to 0.5) and C (0.001 to 0.1) across experiments. Compare against a non-private FL baseline. | Dice similarity coefficient (%), privacy budget (ε, δ), and convergence speed (number of FL rounds to reach 95% of baseline accuracy).",
+      "tasks": [],
+      "resultSummary": {
+        "finalStatus": "FAILURE",
+        "validation": {
+          "status": "INVALID",
+          "issues": [
+            "No tasks approved (0/6 completed).",
+            "Failed task TASK-006 may impact dependent results.",
+            "In-progress task TASK-004 prevents full validation.",
+            "No computed metrics available for evaluation."
+          ]
+        },
+        "metrics": {
+          "accuracy": "N/A",
+          "loss": "N/A",
+          "improvement": "N/A"
+        },
+        "consistency": {
+          "status": "INCONSISTENT",
+          "details": "Cannot assess consistency due to missing task outputs. Hypothesis evaluation requires Dice similarity coefficients and privacy budgets (ε, δ) from completed experiments."
+        },
+        "anomalies": [
+          "No task outputs available for anomaly detection.",
+          "Failed task TASK-006 may indicate systemic issues (e.g., GPU cluster failure, dataset corruption)."
+        ]
+      }
+    },
+    "signature": {
+      "algorithm": "ed25519",
+      "signature": "7c2927db233d69c42e1cb126b71c7f2002981bc8eeeb2ef272df91781ae3941011191a28f44c2b68d05626083735cbc043e0b984463457754ba24afc686835ca",
+      "signer": "0.0.8320076"
+    },
+    "computedMetrics": {
+      "metrics": {
+        "accuracy": null,
+        "loss": null,
+        "improvement": null
+      },
+      "findings": []
+    },
+    "payoutExecutions": [],
+    "publishedAt": "2026-03-23T20:53:06.595Z"
   }
 ]

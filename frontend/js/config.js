@@ -150,7 +150,8 @@ function assessTopicQuality(topic) {
   if (tokens.length >= 8) score += 0.2;
   if (text.length >= 40) score += 0.2;
   if (/\?$/.test(text) || /versus|vs|compared|impact|effect|role/.test(text.toLowerCase())) score += 0.1;
-  return clamp(score);
+  const clamped = clamp(score);
+  return { score: clamped, usable: clamped >= 0.4 };
 }
 
 function switchTab(agentKey) {

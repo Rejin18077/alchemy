@@ -17,7 +17,7 @@ function renderHOLRegistry() {
   el.innerHTML = agents.map(a => {
     const score = parseFloat(a.reputation_score) || 0;
     const pct = Math.round(score * 100);
-    const color = a.trust_level === 'HIGH' ? '#22c55e' : a.trust_level === 'MEDIUM' ? '#f59e0b' : '#ef4444';
+    const color = a.trust_level === 'HIGH' ? '#10d97f' : a.trust_level === 'MEDIUM' ? '#ffb547' : '#ff4d6a';
     return `
       <div class="hol-agent">
         <div class="hol-agent-header">
@@ -32,6 +32,22 @@ function renderHOLRegistry() {
       </div>
     `;
   }).join('');
+}
+
+// Renders the Agent Card meta box in the left panel
+function renderAgentCard() {
+  const el = document.getElementById('agent-card-meta');
+  if (!el || !state.agentCard) return;
+  const card = state.agentCard;
+  const reg = card.registration || {};
+  const hcs10 = card.reachability?.hcs10 || {};
+  el.innerHTML = `
+    <div style="margin-bottom:6px"><strong>${escapeHtml(card.name || 'ALCHEMY')}</strong></div>
+    <div>Status: ${escapeHtml(reg.status || 'unregistered')}</div>
+    <div>Chat: ${escapeHtml(card.reachability?.naturalLanguageChat || 'n/a')}</div>
+    <div>Inbound Topic: ${escapeHtml(hcs10.inboundTopicId || 'not-created')}</div>
+    <div style="font-size:9px">UAID: ${escapeHtml(reg.uaid || 'not-assigned')}</div>
+  `;
 }
 
 async function registerHolAgent() {
