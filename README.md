@@ -18,13 +18,16 @@ Labor Market Agent → Results Agent → Replication Agent
                   (Agent Identity + Reputation)
 ```
 
-**6 Agents, all powered by Claude:**
+**6 Agents, all powered by Mistral AI:**
 1. **Hypothesis Agent** — Scans literature, generates testable hypotheses
 2. **Peer Review Agent** — 5-reviewer council that attacks falsifiability
-3. **Fundraising Agent** — Opens HTS capital pool, simulates investor decisions
+3. **Fundraising Agent** — Opens HTS capital pool, evaluates investor decisions
 4. **Labor Market Agent** — Posts XMTP bounties, assigns EXP_TOKEN via HTS
-5. **Results Agent** — Archives to HCS, mints verifiable publication NFT
-6. **Replication Agent** — Independently verifies, scores publication NFT reputation
+5. **Results Agent** — Archives to HCS, pins to IPFS via Pinata, mints verifiable publication NFT
+6. **Replication Agent** — Independently verifies, scores publication NFT reputation on-chain
+
+**New Interactive Feature:**
+* **Full-Screen Markdown Chat Popup:** Ask questions and interact with the AI logic in a beautifully styled, full-screen Markdown popup.
 
 ---
 
@@ -91,13 +94,15 @@ Visit: [http://localhost:3000](http://localhost:3000)
 |----------|----------|----------------|
 | `MISTRAL_API_KEY` | ✅ **REQUIRED** | [console.mistral.ai](https://console.mistral.ai/) |
 | `BGE_MODEL` | ⚠️ Optional | BGE model for paper reranking, default `BAAI/bge-small-en-v1.5` |
-| `OLLAMA_MODEL` | ⚠️ Optional | Local Ollama model, e.g. `llama3.1:8b` |
-| `HCS_TOPIC_ID` | ⚠️ Optional | A Hedera Consensus Service topic you control |
-| `HEDERA_ACCOUNT_ID` | ⚠️ Optional | [portal.hedera.com](https://portal.hedera.com/) — free testnet account |
-| `HEDERA_PRIVATE_KEY` | ⚠️ Optional | Same as above — your testnet private key |
-| `REGISTRY_BROKER_API_KEY` | ⚠️ Optional | [hol.org/registry](https://hol.org/registry) |
+| `HCS_TOPIC_ID` | ✅ **REQUIRED** | A Hedera Consensus Service topic you control |
+| `HEDERA_ACCOUNT_ID` | ✅ **REQUIRED** | [portal.hedera.com](https://portal.hedera.com/) — free testnet account |
+| `HEDERA_PRIVATE_KEY` | ✅ **REQUIRED** | Same as above — your testnet private key |
+| `REGISTRY_BROKER_API_KEY`| ✅ **REQUIRED** | [hol.org/registry](https://hol.org/registry) |
+| `PINATA_API_KEY` | ✅ **REQUIRED** | [pinata.cloud](https://pinata.cloud/) |
+| `PINATA_API_SECRET`| ✅ **REQUIRED** | Same as above |
+| `XMTP_PRIVATE_KEY` | ✅ **REQUIRED** | Standard EVM Wallet Private Key |
 
-> **Without `MISTRAL_API_KEY`**, the agents cannot run. Everything else is simulated if not provided.
+> **IMPORTANT: Simulation mode has been disabled.** This project requires full real-world credentials configured to execute successfully without crashing. Ensure your Hedera credentials have an active testnet HBAR balance!
 
 **Model options** (set in `server.js` line 4):
 - `mistral-large-latest` — best quality, higher cost (default)
@@ -141,21 +146,17 @@ When you click **"Run Experiment"**:
 
 ---
 
-## 🌐 Hedera Integration
+## 🌐 Hedera & Decentralized Integration
 
-### What's Simulated (MVP)
-The following are **simulated** in the MVP (they generate realistic data but don't touch the real blockchain):
-- HCS-10 message bus (stored in memory on the server)
-- HOL Registry updates (stored in memory)
-- HTS token distribution (EXP_TOKEN)
-- NFT minting
+### Simulation Completely Disabled
+The application has transitioned out of its "simulated MVP" phase. The following decentralized services are strictly enforced:
+- **HCS-10 message bus**: Real events published natively to the Hedera Testnet.
+- **HOL Registry Broker updates**: Real agent identities pushed up to the HOL ecosystem.
+- **HTS token distribution**: Real $EXP token minting.
+- **Publication NFT**: Real Hedera Non-Fungible Tokens generated, with metadata pinned securely to **IPFS via Pinata**.
+- **XMTP Bounties**: Messages directly sent to the XMTP network.
 
-### What's Implemented Now
-The backend can now use **real Hedera services** when configured:
-- `POST /api/hcs/log` submits experiment events to a real HCS topic if `HCS_TOPIC_ID`, `HEDERA_ACCOUNT_ID`, `HEDERA_PRIVATE_KEY`, and `@hashgraph/sdk` are present
-- `TASKS_PUBLISHED` events mint or reuse a real fungible HTS token for the EXP pool
-- `RESULT_PUBLISHED` events mint or reuse a real HTS NFT collection for publication records
-- If Hedera is not fully configured, the app automatically falls back to the original in-memory simulation mode
+Any execution without properly configured `.env` dependencies will "fail fast" and correctly abort instead of falling back to mocked output.
 
 ### How to Make It Real
 
@@ -225,25 +226,16 @@ npm run dev
 
 ---
 
-## 🎯 Hackathon MVP
+## 🎯 Current Implementation
 
 The current implementation covers:
-- ✅ Full 6-agent pipeline with Mistral responses and Ollama fallback
+- ✅ Full 6-agent pipeline with Mistral AI integration
+- ✅ Interactive Full-Screen Markdown Agent Chat interface
 - ✅ Hypothesis agent with real Semantic Scholar retrieval and BGE reranking
-- ✅ HCS-10 message bus (simulated, replaceable with real HCS)
-- ✅ HOL Registry with reputation scoring (simulated)
-- ✅ HTS token simulation (EXP_TOKEN bounties)
-- ✅ Publication NFT metadata generation
-- ✅ Replication scoring
+- ✅ **Real On-Chain** HCS-10 message bus
+- ✅ **Real On-Chain** HOL Registry TLS integration via the Broker API
+- ✅ **Real On-Chain** HTS token generation for EXP rewards
+- ✅ **Real Decentralized** Publication NFT metadata generation pinned via Pinata IPFS
+- ✅ **Real Network** XMTP integration for open labor bidding
+- ✅ Replication verification with HTS metadata reputation updating
 - ✅ Beautiful dark sci-fi UI matching the ALCHEMY diagram
-
----
-
-## 🔮 Future Extensions
-
-- Replace simulated HCS with real Hedera Consensus Service
-- Integrate XMTP for real worker messaging
-- Add real HTS token creation and distribution
-- Connect to Semantic Scholar / ArXiv APIs for real paper retrieval
-- Deploy agents as registered HOL agents with real UAIDs
-- Multi-chain support via ERC-8004
