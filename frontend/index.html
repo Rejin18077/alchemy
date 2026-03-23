@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALCHEMY — Autonomous Scientific Research Protocol on Hedera</title>
+<meta name="description" content="ALCHEMY is an AI-native autonomous scientific research protocol powered by Hedera HCS, HTS, and the HOL Registry Broker.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/agents.css">
+<link rel="stylesheet" href="css/hcs.css">
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header>
+  <div class="logo-block">
+    <div class="logo">ALCHEMY</div>
+    <div class="logo-sub">Autonomous Scientific Research Protocol</div>
+  </div>
+  <div class="header-right">
+    <div id="api-status" class="api-status">
+      <span class="status-dot"></span> Connecting...
+    </div>
+    <button id="wallet-btn" class="wallet-btn" onclick="connectWallet()">
+      <span id="wallet-icon">⬡</span>
+      <span id="wallet-label">Connect Wallet</span>
+    </button>
+    <div class="hedera-badge">⬡ HOL / HASHGRAPH · Mistral AI</div>
+  </div>
+</header>
+
+<!-- ── App Shell ────────────────────────────────────────────── -->
+<div class="app-shell">
+
+  <!-- ── Left Panel — Experiment Control ───────────────────── -->
+  <aside class="left-panel">
+    <div class="panel-header">◆ Experiment Control</div>
+
+    <!-- Research Topic -->
+    <div class="control-section">
+      <label>Research Topic</label>
+      <textarea id="research-topic" placeholder="Enter a research topic or hypothesis area...&#10;&#10;e.g. Low-rank adaptation in large language models"></textarea>
+      <div class="sample-topics">
+        <div class="sample-topics-label">Sample topics ↓</div>
+        <span class="sample-topic">Federated learning privacy preservation in medical imaging</span>
+        <span class="sample-topic">Attention mechanisms in vision transformers vs CNNs</span>
+        <span class="sample-topic">RLHF alignment in code generation models</span>
+        <span class="sample-topic">Graph neural networks for drug discovery</span>
+      </div>
+      <button id="run-btn">⚡ Run Experiment</button>
+    </div>
+
+    <!-- Agent Registration -->
+    <div class="control-section">
+      <label>Agent Registration</label>
+      <div id="agent-card-meta" class="meta-box">Loading agent card...</div>
+      <button id="register-agent-btn" class="secondary-btn">Register Agent via HOL</button>
+    </div>
+
+    <!-- Natural Language Chat -->
+    <div class="control-section">
+      <label>Natural Language Chat</label>
+      <div id="chat-log" class="chat-log">
+        <div class="empty-state">Ask the agent anything about the experiment or the protocol.</div>
+      </div>
+      <textarea id="chat-input" placeholder="Ask about experiments, HCS-10, HOL registration, or this dApp…"></textarea>
+      <button id="chat-send-btn" class="secondary-btn">Send Message</button>
+    </div>
+
+    <!-- Fundraising & Status Log -->
+    <div class="status-log-section">
+      <div class="panel-header">◆ Pipeline Log</div>
+      <div id="fundraising-controls" class="control-section">
+        <label>Funding Marketplace</label>
+        <div id="fundraising-meta" class="meta-box">Loading treasury and campaign status...</div>
+        <button id="create-campaign-btn" class="secondary-btn">Create Campaign From Fundraising</button>
+        <select id="campaign-id" class="control-select"></select>
+        <div id="campaign-list" class="campaign-list">
+          <div class="empty-state">No funding campaigns yet.</div>
+        </div>
+
+        <label style="margin-top:12px;">Investor Identity</label>
+        <input id="investor-account" class="control-input" placeholder="Hedera account ID, e.g. 0.0.12345">
+        <input id="investor-name" class="control-input" placeholder="Display name">
+        <input id="investor-alias" class="control-input" placeholder="Investor alias or HOL handle">
+        <select id="investor-risk" class="control-select">
+          <option value="balanced">Balanced</option>
+          <option value="conservative">Conservative</option>
+          <option value="aggressive">Aggressive</option>
+        </select>
+        <input id="wallet-provider" class="control-input" placeholder="Wallet provider, e.g. HashPack">
+        <button id="save-investor-btn" class="secondary-btn">Save Investor Profile</button>
+        <button id="match-campaigns-btn" class="secondary-btn">Match Investor To Campaigns</button>
+        <div id="match-results" class="meta-box">No campaign matches calculated yet.</div>
+
+        <label style="margin-top:12px;">Contribution Flow</label>
+        <input id="contribution-usd" class="control-input" placeholder="Contribution amount in USD">
+        <input id="contribution-txid" class="control-input" placeholder="Optional Hedera transaction ID">
+        <button id="contribution-intent-btn" class="secondary-btn">Generate Contribution Instructions</button>
+        <button id="record-contribution-btn" class="secondary-btn">Record Contribution</button>
+        <div id="contribution-meta" class="meta-box">Generate an intent to see treasury instructions.</div>
+      </div>
+      <div id="status-log"></div>
+    </div>
+  </aside>
+
+  <!-- ── Center Panel — Agent Workspace ──────────────────────── -->
+  <main class="center-panel">
+
+    <!-- Pipeline Status Banner -->
+    <div class="pipeline-banner" id="pipeline-banner">
+      <span class="banner-step-label" id="banner-step">IDLE</span>
+      <span class="banner-description" id="banner-desc">Enter a research topic and click ⚡ Run Experiment to launch the autonomous pipeline.</span>
+      <div class="pipeline-progress-track">
+        <div class="pipeline-progress-fill" id="pipeline-progress"></div>
+      </div>
+    </div>
+
+    <!-- Pipeline Overview Bar -->
+    <div class="pipeline-overview">
+      <div class="pipeline-node" onclick="switchTab('hypothesis')" data-tooltip="Searches Semantic Scholar and generates a novel testable claim">
+        <div class="pipeline-circle" style="border-color:#7c3aed;color:#7c3aed">🔬</div>
+        <div class="pipeline-label">Hypothesis</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node" onclick="switchTab('peerReview')" data-tooltip="5 AI reviewers independently evaluate and attack the hypothesis">
+        <div class="pipeline-circle" style="border-color:#c2410c;color:#c2410c">⚖️</div>
+        <div class="pipeline-label">Peer Review</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node" onclick="switchTab('fundraising')" data-tooltip="Opens a capital pool on Hedera HTS to fund the experiment">
+        <div class="pipeline-circle" style="border-color:#b45309;color:#b45309">💰</div>
+        <div class="pipeline-label">Fundraising</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node" onclick="switchTab('labor')" data-tooltip="Posts bounty tasks to a decentralized worker marketplace via XMTP">
+        <div class="pipeline-circle" style="border-color:#0f766e;color:#0f766e">⚙️</div>
+        <div class="pipeline-label">Labor Market</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node" onclick="switchTab('results')" data-tooltip="Archives results to HCS and mints a verifiable Publication NFT on HTS">
+        <div class="pipeline-circle" style="border-color:#0369a1;color:#0369a1">📊</div>
+        <div class="pipeline-label">Results</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node" onclick="switchTab('replication')" data-tooltip="Independently verifies results and updates the NFT reputation score">
+        <div class="pipeline-circle" style="border-color:#15803d;color:#15803d">🔄</div>
+        <div class="pipeline-label">Replication</div>
+      </div>
+    </div>
+
+    <!-- Agent Tab Bar -->
+    <div class="agent-tabs">
+      <button class="agent-tab-btn active" data-agent="hypothesis"><span class="tab-dot" style="color:#7c3aed"></span> Hypothesis</button>
+      <button class="agent-tab-btn" data-agent="peerReview"><span class="tab-dot" style="color:#c2410c"></span> Peer Review</button>
+      <button class="agent-tab-btn" data-agent="fundraising"><span class="tab-dot" style="color:#b45309"></span> Fundraising</button>
+      <button class="agent-tab-btn" data-agent="labor"><span class="tab-dot" style="color:#0f766e"></span> Labor Market</button>
+      <button class="agent-tab-btn" data-agent="results"><span class="tab-dot" style="color:#0369a1"></span> Results</button>
+      <button class="agent-tab-btn" data-agent="replication"><span class="tab-dot" style="color:#15803d"></span> Replication</button>
+    </div>
+
+    <!-- Agent Panels -->
+    <div class="agent-panels">
+
+      <!-- Hypothesis Agent -->
+      <div class="agent-panel active" data-agent="hypothesis">
+        <div class="agent-card" id="card-hypothesis" data-status="idle">
+          <div class="agent-card-header" style="background:linear-gradient(90deg,rgba(124,58,237,0.1),transparent)">
+            <div class="agent-icon">🔬</div>
+            <div class="agent-info">
+              <div class="agent-name" style="color:#a78bfa">Hypothesis Agent</div>
+              <div class="agent-subtitle">Searches Semantic Scholar · Generates testable scientific claims · Logs to HCS-10</div>
+            </div>
+            <div class="agent-indicator" id="ind-hypothesis"></div>
+          </div>
+          <div class="agent-id-bar">ID: <span>hypothesis-agent-001</span> · Protocol: <span>HCS-10</span> · Registry: <span>hashgraph-online</span></div>
+          <div class="agent-status-msg" id="status-msg-hypothesis"></div>
+        </div>
+        <div class="agent-output-wrapper">
+          <div class="output-header">⬡ HCS OUTPUT — HYPOTHESIS_GENERATED</div>
+          <div class="output-body" id="output-hypothesis">
+            <div class="waiting">Run an experiment to see the Hypothesis Agent output here.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Peer Review Agent -->
+      <div class="agent-panel" data-agent="peerReview">
+        <div class="agent-card" id="card-peerReview" data-status="idle">
+          <div class="agent-card-header" style="background:linear-gradient(90deg,rgba(194,65,12,0.1),transparent)">
+            <div class="agent-icon">⚖️</div>
+            <div class="agent-info">
+              <div class="agent-name" style="color:#fb923c">Peer Review Agent</div>
+              <div class="agent-subtitle">5 independent AI reviewers · Attacks falsifiability · Produces verdict + score</div>
+            </div>
+            <div class="agent-indicator" id="ind-peerReview"></div>
+          </div>
+          <div class="agent-id-bar">ID: <span>peer-review-agent-001</span> · Protocol: <span>HCS-10</span> · Action: <span>REVIEW_COMPLETED</span></div>
+          <div class="agent-status-msg" id="status-msg-peerReview"></div>
+        </div>
+        <div class="agent-output-wrapper">
+          <div class="output-header">⬡ HCS OUTPUT — REVIEW_COMPLETED</div>
+          <div class="output-body" id="output-peerReview">
+            <div class="waiting">Waiting for Hypothesis Agent to complete...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fundraising Agent -->
+      <div class="agent-panel" data-agent="fundraising">
+        <div class="agent-card" id="card-fundraising" data-status="idle">
+          <div class="agent-card-header" style="background:linear-gradient(90deg,rgba(180,83,9,0.1),transparent)">
+            <div class="agent-icon">💰</div>
+            <div class="agent-info">
+              <div class="agent-name" style="color:#fbbf24">Fundraising Agent</div>
+              <div class="agent-subtitle">Opens HBAR capital pool via HTS · Matches investors · Simulates contributions</div>
+            </div>
+            <div class="agent-indicator" id="ind-fundraising"></div>
+          </div>
+          <div class="agent-id-bar">ID: <span>fundraising-agent-001</span> · Token: <span>EXP_TOKEN (HTS)</span> · Action: <span>FUNDING_DECISION</span></div>
+          <div class="agent-status-msg" id="status-msg-fundraising"></div>
+        </div>
+        <div class="agent-output-wrapper">
+          <div class="output-header">⬡ HTS OUTPUT — CAPITAL_POOL_OPENED</div>
+          <div class="output-body" id="output-fundraising">
+            <div class="waiting">Waiting for Peer Review to complete...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Labor Market Agent -->
+      <div class="agent-panel" data-agent="labor">
+        <div class="agent-card" id="card-labor" data-status="idle">
+          <div class="agent-card-header" style="background:linear-gradient(90deg,rgba(15,118,110,0.1),transparent)">
+            <div class="agent-icon">⚙️</div>
+            <div class="agent-info">
+              <div class="agent-name" style="color:#34d399">Labor Market Agent</div>
+              <div class="agent-subtitle">Breaks research into bounty tasks · Posts via XMTP · Pays workers EXP_TOKEN</div>
+            </div>
+            <div class="agent-indicator" id="ind-labor"></div>
+          </div>
+          <div class="agent-id-bar">ID: <span>labor-agent-001</span> · Bounty: <span>EXP_TOKEN</span> · Action: <span>TASKS_PUBLISHED</span></div>
+          <div class="agent-status-msg" id="status-msg-labor"></div>
+        </div>
+        <div class="agent-output-wrapper">
+          <div class="output-header">⬡ HCS OUTPUT — TASKS_PUBLISHED</div>
+          <div class="output-body" id="output-labor">
+            <div class="waiting">Waiting for Fundraising to complete...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Agent -->
+      <div class="agent-panel" data-agent="results">
+        <div class="agent-card" id="card-results" data-status="idle">
+          <div class="agent-card-header" style="background:linear-gradient(90deg,rgba(3,105,161,0.1),transparent)">
+            <div class="agent-icon">📊</div>
+            <div class="agent-info">
+              <div class="agent-name" style="color:#38bdf8">Results Agent</div>
+              <div class="agent-subtitle">Compiles findings · Archives to HCS · Pins to IPFS · Mints Publication NFT</div>
+            </div>
+            <div class="agent-indicator" id="ind-results"></div>
+          </div>
+          <div class="agent-id-bar">ID: <span>results-agent-001</span> · NFT: <span>HTS Publication Token</span> · Action: <span>RESULT_PUBLISHED</span></div>
+          <div class="agent-status-msg" id="status-msg-results"></div>
+        </div>
+        <div class="agent-output-wrapper">
+          <div class="output-header">⬡ HCS OUTPUT — RESULT_PUBLISHED + NFT_MINTED</div>
+          <div class="output-body" id="output-results">
+            <div class="waiting">Waiting for Labor Market to complete...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Replication Agent -->
+      <div class="agent-panel" data-agent="replication">
+        <div class="agent-card" id="card-replication" data-status="idle">
+          <div class="agent-card-header" style="background:linear-gradient(90deg,rgba(21,128,61,0.1),transparent)">
+            <div class="agent-icon">🔄</div>
+            <div class="agent-info">
+              <div class="agent-name" style="color:#4ade80">Replication Agent</div>
+              <div class="agent-subtitle">Independently verifies results · Updates NFT reputation score on Hedera</div>
+            </div>
+            <div class="agent-indicator" id="ind-replication"></div>
+          </div>
+          <div class="agent-id-bar">ID: <span>replication-agent-001</span> · Token: <span>EXP_TOKEN</span> · Action: <span>REPLICATION_DONE</span></div>
+          <div class="agent-status-msg" id="status-msg-replication"></div>
+        </div>
+        <div class="agent-output-wrapper">
+          <div class="output-header">⬡ HCS OUTPUT — REPLICATION_DONE + NFT_REPUTATION_UPDATED</div>
+          <div class="output-body" id="output-replication">
+            <div class="waiting">Waiting for Results Agent to complete...</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /agent-panels -->
+  </main>
+
+  <!-- ── Right Panel — Live Blockchain Activity ──────────────── -->
+  <aside class="right-panel">
+
+    <!-- HCS-10 Message Bus -->
+    <div class="right-panel-section">
+      <div class="panel-header">
+        <span>⬡ HCS-10 MESSAGE BUS</span>
+        <span id="inbound-badge" style="font-size:9px;background:rgba(6,182,212,0.15);color:#06b6d4;padding:2px 6px;border-radius:3px;display:none;">● INBOUND</span>
+      </div>
+      <div class="right-panel-section-body" id="hcs-messages">
+        <div class="empty-state">No messages yet. Run an experiment to start logging to Hedera.</div>
+      </div>
+    </div>
+
+    <!-- HOL Registry -->
+    <div class="right-panel-section">
+      <div class="panel-header">🏛 HOL REGISTRY — Agent Identity</div>
+      <div class="right-panel-section-body" id="hol-agents">
+        <div class="empty-state">No agents registered yet.</div>
+      </div>
+    </div>
+
+    <!-- Discovered Agents -->
+    <div class="right-panel-section">
+      <div class="panel-header">
+        <span>🔍 DISCOVERED AGENTS</span>
+        <button onclick="discoverAgents()" id="discover-btn" style="font-size:9px;padding:2px 7px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:3px;color:var(--accent);cursor:pointer;">Refresh</button>
+      </div>
+      <div class="right-panel-section-body" id="discovered-agents-list">
+        <div class="empty-state">Click Refresh to discover agents from HOL Registry.</div>
+      </div>
+    </div>
+
+  </aside>
+
+</div><!-- /app-shell -->
+
+<!-- Success Modal -->
+<div id="success-modal">
+  <div class="success-modal-title">✓ Experiment Complete</div>
+  <div class="success-modal-body">Results published to HCS. Publication NFT minted. Replication verified.</div>
+</div>
+
+<!-- Scripts -->
+<script src="agents.js"></script>
+<script src="js/config.js"></script>
+<script src="js/wallet.js"></script>
+<script src="js/hcs.js"></script>
+<script src="js/hol.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/fundraising.js"></script>
+<script src="js/pipeline.js"></script>
+<script src="js/init.js"></script>
+</body>
+</html>

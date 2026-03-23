@@ -1,4 +1,7 @@
 require('dotenv').config();
+const { validateEnv } = require('./src/server/core/validate-env');
+validateEnv(); // Run startup validation before anything else
+
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
@@ -55,8 +58,10 @@ const {
 const {
   createAgentCard,
   buildChatSystemPrompt,
-  ensureHolAgentRegistration
+  ensureHolAgentRegistration,
+  discoverAgentsFromRegistry
 } = require('./src/server/integrations/hol');
+
 const {
   fetchSemanticScholarPapers,
   rerankPapersWithBge,
@@ -86,11 +91,15 @@ const {
   shutdownDatabase,
   getDatabaseStatus
 } = require('./src/server/db/sqlite');
+const { startHcsListener, stopHcsListener, getInboundMessages } = require('./src/server/integrations/hcs-listener');
+const { initXmtp, getXmtpStatus, dispatchTaskViaXmtp } = require('./src/server/integrations/xmtp');
+const { pinPublicationBundle, getIpfsStatus } = require('./src/server/integrations/ipfs');
+
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 
 
@@ -818,6 +827,8 @@ app.get('/api/health', async (req, res) => {
       registrationStatus: agentRuntime.registration?.status || 'unregistered'
     },
     database: getDatabaseStatus(),
+    xmtp: getXmtpStatus(),
+    ipfs: getIpfsStatus(),
     inference: {
       ...getInferenceStatus(),
       ollama
@@ -957,10 +968,66 @@ app.get('/mcp/sse', (req, res) => {
   res.write(`data: ${JSON.stringify(card)}\n\n`);
   res.write(`event: status\n`);
   res.write(`data: ${JSON.stringify({ message: 'ALCHEMY MCP bridge is online', registration: agentRuntime.registration?.status || 'unregistered' })}\n\n`);
+
+  // Stream any new inbound HCS messages as SSE events every 10s
+  const streamInterval = setInterval(() => {
+    const recent = getInboundMessages(5);
+    if (recent.length > 0) {
+      res.write(`event: inbound-messages\n`);
+      res.write(`data: ${JSON.stringify(recent)}\n\n`);
+    }
+  }, 10000);
+
   req.on('close', () => {
+    clearInterval(streamInterval);
     res.end();
   });
 });
+
+// ─── Inbound HCS Messages ────────────────────────────────────
+app.get('/api/hcs/inbound', (req, res) => {
+  const limit = Number(req.query.limit || 20);
+  res.json(getInboundMessages(limit));
+});
+
+// ─── XMTP Status ─────────────────────────────────────────────
+app.get('/api/xmtp/status', (req, res) => {
+  res.json(getXmtpStatus());
+});
+
+app.post('/api/xmtp/send', async (req, res) => {
+  const { to, message } = req.body || {};
+  if (!to || !message) {
+    return res.status(400).json({ error: '"to" and "message" are required' });
+  }
+  try {
+    const { sendXmtpMessage } = require('./src/server/integrations/xmtp');
+    const result = await sendXmtpMessage(to, message);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── IPFS Status ──────────────────────────────────────────────
+app.get('/api/ipfs/status', (req, res) => {
+  res.json(getIpfsStatus());
+});
+
+// ─── HOL Agent Discovery ──────────────────────────────────────
+app.get('/api/hol/discover', async (req, res) => {
+  try {
+    const capabilities = req.query.capabilities
+      ? String(req.query.capabilities).split(',').map(c => c.trim()).filter(Boolean)
+      : [];
+    const limit = Number(req.query.limit || 20);
+    const agents = await discoverAgentsFromRegistry({ capabilities, limit });
+    res.json({ agents, count: agents.length });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 app.post('/api/hcs/log', async (req, res) => {
   const entry = {
@@ -1051,7 +1118,12 @@ loadResultsState()
   }))
   .then(() => {
     startDatabaseAutosave();
+    // Start HCS-10 inbound listener (polls Mirror Node every 15s)
+    startHcsListener(15000);
+    // Initialize XMTP client in background
+    initXmtp().catch(err => console.warn('[XMTP] Init error:', err.message));
     app.listen(PORT, () => {
+
     const hedera = getHederaMode();
     const agentCfg = getAgentEnvConfig();
     console.log(`\nALCHEMY Protocol Server running at http://localhost:${PORT}`);
@@ -1086,11 +1158,14 @@ loadResultsState()
   });
 
 process.on('SIGINT', () => {
+  stopHcsListener();
   shutdownDatabase()
     .finally(() => process.exit(0));
 });
 
 process.on('SIGTERM', () => {
+  stopHcsListener();
   shutdownDatabase()
     .finally(() => process.exit(0));
 });
+

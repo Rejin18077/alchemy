@@ -1,0 +1,87 @@
+/* ─── HCS Messages ───────────────────────────────────────── */
+.hcs-message {
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg2);
+  animation: fadeIn 0.3s ease;
+}
+
+.hcs-message.inbound { border-left: 2px solid var(--cyan); }
+.hcs-message.outbound { border-left: 2px solid rgba(99,102,241,0.5); }
+
+.hcs-msg-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.hcs-direction-badge {
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.hcs-direction-badge.in { background: rgba(6,182,212,0.15); color: var(--cyan); }
+.hcs-direction-badge.out { background: rgba(99,102,241,0.12); color: var(--accent); }
+
+.hcs-agent-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.hcs-action { font-size: 9px; color: var(--text-dim); flex: 1; }
+
+/* Plain-English translation of action type */
+.hcs-action-label {
+  font-size: 8px;
+  color: var(--amber);
+  font-style: italic;
+  margin-left: 4px;
+}
+
+.hcs-time { font-size: 9px; color: var(--text-muted); }
+
+.hcs-msg-id, .hcs-exp-id {
+  font-size: 8px;
+  color: var(--text-muted);
+  font-family: var(--mono);
+  word-break: break-all;
+  margin-top: 2px;
+}
+
+/* ─── HOL Registry ───────────────────────────────────────── */
+.hol-agent {
+  padding: 10px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg2);
+  animation: fadeIn 0.3s ease;
+}
+
+.hol-agent-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.hol-agent-id { font-size: 9px; color: var(--text-dim); word-break: break-all; }
+.hol-trust { font-size: 9px; font-weight: 700; }
+
+.hol-rep-bar { height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden; margin-bottom: 5px; }
+.hol-rep-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+.hol-rep-score, .hol-contributions { font-size: 9px; color: var(--text-muted); }
+
+/* ─── Discovered Agents ──────────────────────────────────── */
+.discovered-agent {
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg2);
+  animation: fadeIn 0.3s ease;
+}
+.discovered-agent-name { font-size: 10px; color: var(--text); margin-bottom: 3px; }
+.discovered-agent-meta { font-size: 9px; color: var(--text-muted); }
+.discovered-agent-caps { font-size: 8px; color: var(--cyan); margin-top: 3px; }

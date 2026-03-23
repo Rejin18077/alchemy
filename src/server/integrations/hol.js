@@ -203,11 +203,66 @@ async function ensureHolAgentRegistration(baseUrl) {
   return registration;
 }
 
+/**
+ * Searches the HOL Registry Broker for agents matching given capabilities.
+ * Falls back gracefully if the Registry Broker API key is not configured.
+ *
+ * @param {object} options
+ * @param {string[]} [options.capabilities]  Capability enum strings to filter by
+ * @param {number}   [options.limit]         Max results
+ * @returns {Promise<object[]>}  Array of agent profile objects
+ */
+async function discoverAgentsFromRegistry(options = {}) {
+  if (!hasConfiguredValue(process.env.REGISTRY_BROKER_API_KEY, ['rbk_...'])) {
+    return [
+      {
+        id: 'simulated-agent-001',
+        name: 'Simulated Peer Reviewer',
+        alias: 'peer_reviewer_sim',
+        capabilities: ['KNOWLEDGE_RETRIEVAL', 'SUMMARIZATION_EXTRACTION'],
+        reachability: { hcs10: null, rest: null },
+        simulated: true
+      }
+    ];
+  }
+
+  try {
+    const holSdk = await loadHolSdk();
+    const cfg = getAgentEnvConfig();
+    const broker = new holSdk.RegistryBrokerClient({
+      apiKey: process.env.REGISTRY_BROKER_API_KEY,
+      baseUrl: cfg.guardedRegistryBaseUrl
+    });
+
+    const result = await broker.listAgents({
+      capabilities: options.capabilities || [],
+      limit: options.limit || 20
+    });
+
+    const agents = Array.isArray(result?.agents) ? result.agents : (Array.isArray(result) ? result : []);
+    return agents.map(agent => ({
+      id: agent.id || agent.agentId || agent.uaid || 'unknown',
+      name: agent.profile?.display_name || agent.name || agent.id,
+      alias: agent.profile?.alias || agent.alias || null,
+      capabilities: agent.profile?.aiAgent?.capabilities || [],
+      uaid: agent.uaid || agent.id || null,
+      inboundTopicId: agent.profile?.inboundTopicId || null,
+      endpoint: agent.endpoint || agent.profile?.properties?.rest_chat_endpoint || null,
+      discoveredAt: new Date().toISOString(),
+      simulated: false
+    }));
+  } catch (err) {
+    console.error('[HOL Discovery] Failed:', err.message);
+    return [];
+  }
+}
+
 module.exports = {
   loadHolSdk,
   getHolCapabilityEnums,
   createAgentProfilePayload,
   createAgentCard,
   buildChatSystemPrompt,
-  ensureHolAgentRegistration
+  ensureHolAgentRegistration,
+  discoverAgentsFromRegistry
 };

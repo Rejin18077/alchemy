@@ -1,0 +1,30 @@
+/* ─── All Keyframe Animations ────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes pulseCard {
+  0%, 100% { box-shadow: 0 0 12px rgba(99,102,241,0.15); }
+  50% { box-shadow: 0 0 24px rgba(99,102,241,0.3); }
+}
+
+@keyframes pulseCircle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}

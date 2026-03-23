@@ -125,6 +125,46 @@ header {
   letter-spacing: 1px;
 }
 
+/* Wallet Connect Button */
+.wallet-btn {
+  padding: 6px 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(99,102,241,0.4);
+  background: rgba(99,102,241,0.08);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.wallet-btn:hover { background: rgba(99,102,241,0.18); border-color: var(--accent); }
+.wallet-btn.connected { border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.08); color: #86efac; }
+.wallet-btn.connected:hover { background: rgba(34,197,94,0.15); }
+
+/* Discovered Agents */
+.discovered-agent {
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg2);
+  animation: fadeIn 0.3s ease;
+}
+.discovered-agent-name { font-size: 10px; color: var(--text); margin-bottom: 3px; }
+.discovered-agent-meta { font-size: 9px; color: var(--text-muted); }
+.discovered-agent-caps { font-size: 8px; color: var(--cyan); margin-top: 3px; }
+.hcs-direction-badge {
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 700;
+}
+.hcs-direction-badge.in { background: rgba(6,182,212,0.15); color: var(--cyan); }
+.hcs-direction-badge.out { background: rgba(99,102,241,0.12); color: var(--accent); }
+
 /* ─── Main Layout ────────────────────────────────────────── */
 .app-shell {
   display: grid;
@@ -829,6 +869,10 @@ textarea#chat-input {
     <div id="api-status" class="api-status">
       <span class="status-dot"></span> Connecting...
     </div>
+    <button id="wallet-btn" class="wallet-btn" onclick="connectWallet()">
+      <span id="wallet-icon">⬡</span>
+      <span id="wallet-label">Connect Wallet</span>
+    </button>
     <div class="hedera-badge">⬡ HOL / HASHGRAPH · Mistral AI</div>
   </div>
 </header>
@@ -1113,7 +1157,10 @@ textarea#chat-input {
 
     <!-- HCS-10 Message Bus -->
     <div class="right-panel-section">
-      <div class="panel-header">⬡ HCS-10 MESSAGE BUS</div>
+      <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>⬡ HCS-10 MESSAGE BUS</span>
+        <span id="inbound-badge" style="font-size:9px;background:rgba(6,182,212,0.15);color:#06b6d4;padding:2px 6px;border-radius:3px;display:none;">● INBOUND</span>
+      </div>
       <div class="right-panel-section-body" id="hcs-messages">
         <div class="empty-state">No messages yet.</div>
       </div>
@@ -1124,6 +1171,17 @@ textarea#chat-input {
       <div class="panel-header">🏛 HOL REGISTRY — Agent Identity</div>
       <div class="right-panel-section-body" id="hol-agents">
         <div class="empty-state">No agents registered yet.</div>
+      </div>
+    </div>
+
+    <!-- Discovered Agents -->
+    <div class="right-panel-section">
+      <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>🔍 DISCOVERED AGENTS</span>
+        <button onclick="discoverAgents()" id="discover-btn" style="font-size:9px;padding:2px 7px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:3px;color:var(--accent);cursor:pointer;">Refresh</button>
+      </div>
+      <div class="right-panel-section-body" id="discovered-agents-list">
+        <div class="empty-state">Click Refresh to discover agents from HOL Registry.</div>
       </div>
     </div>
 

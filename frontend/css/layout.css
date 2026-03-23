@@ -1,0 +1,206 @@
+/* ─── Header ────────────────────────────────────────────── */
+header {
+  position: relative;
+  padding: 20px 32px 18px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(99,102,241,0.04) 0%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.logo-block {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.logo {
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logo-sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.api-status {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+.api-status.connected { border-color: rgba(34,197,94,0.3); color: #86efac; }
+.api-status.error { border-color: rgba(239,68,68,0.3); color: #fca5a5; }
+
+.status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+.status-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.status-dot.red { background: var(--red); box-shadow: 0 0 6px var(--red); }
+
+.hedera-badge {
+  font-size: 10px;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+}
+
+/* Wallet Button */
+.wallet-btn {
+  padding: 6px 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(99,102,241,0.4);
+  background: rgba(99,102,241,0.08);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.wallet-btn:hover { background: rgba(99,102,241,0.18); border-color: var(--accent); }
+.wallet-btn.connected { border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.08); color: #86efac; }
+
+/* ─── Main Layout ────────────────────────────────────────── */
+.app-shell {
+  display: grid;
+  grid-template-columns: 300px 1fr 290px;
+  height: calc(100vh - 73px);
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Pipeline Status Banner ────────────────────────────── */
+.pipeline-banner {
+  background: linear-gradient(90deg, rgba(99,102,241,0.08), rgba(6,182,212,0.06));
+  border-bottom: 1px solid var(--border);
+  padding: 8px 20px;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.banner-step-label {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.banner-description {
+  flex: 1;
+  color: var(--text-dim);
+}
+
+/* Pipeline progress bar */
+.pipeline-progress-track {
+  width: 140px;
+  height: 3px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.pipeline-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--cyan));
+  border-radius: 2px;
+  transition: width 0.6s ease;
+  width: 0%;
+}
+
+/* ─── Left Panel ─────────────────────────────────────────── */
+.left-panel {
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  grid-row: 1 / 3;
+}
+
+.panel-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ─── Right Panel ────────────────────────────────────────── */
+.right-panel {
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  grid-row: 1 / 3;
+  grid-column: 3;
+}
+
+.right-panel-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.right-panel-section + .right-panel-section { border-top: 1px solid var(--border); }
+.right-panel-section .panel-header { flex-shrink: 0; }
+
+.right-panel-section-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* ─── Center Panel ───────────────────────────────────────── */
+.center-panel {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  grid-row: 2;
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .app-shell { grid-template-columns: 260px 1fr; }
+  .right-panel { display: none; }
+}
+
+@media (max-width: 768px) {
+  .app-shell { grid-template-columns: 1fr; }
+  .left-panel { display: none; }
+}

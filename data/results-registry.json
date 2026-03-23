@@ -283,22 +283,22 @@
     "publishedAt": "2026-03-21T17:46:49.494Z"
   },
   {
-    "experimentId": "EXP-1774121892298-AVW0V7",
-    "manifestHash": "6387eca6c3e294cb53a1b8825679d98b3ceec91bff90811ed78e24eef73767bf",
+    "experimentId": "EXP-1774125327588-90XPMV",
+    "manifestHash": "dca726e43f4d62bc7998572309b3000a42a2ad8c9df377ef42103f5f6fadb416",
     "manifest": {
-      "experimentId": "EXP-1774121892298-AVW0V7",
-      "generatedAt": "2026-03-21T19:40:09.761Z",
-      "hypothesis": "Heterogeneous ensembles (e.g., combining CNNs, Transformers, and Gradient Boosting models) will outperform homogeneous ensembles (e.g., multiple instances of the same model architecture) on high-dimensional, sparse datasets, as measured by classification accuracy and F1-score, due to increased model diversity capturing complementary feature representations. | Heterogeneous ensembles will achieve at least 5% higher accuracy and F1-score compared to homogeneous ensembles on high-dimensional datasets (e.g., genomics or NLP embeddings). | Train and evaluate homogeneous and heterogeneous ensembles on benchmark high-dimensional datasets (e.g., TCGA for genomics, GLUE for NLP). Use cross-validation and hold-out test sets to measure performance. Include adversarial noise to test robustness. | Accuracy, F1-score, and area under the ROC curve (AUC).",
+      "experimentId": "EXP-1774125327588-90XPMV",
+      "generatedAt": "2026-03-21T20:37:45.759Z",
+      "hypothesis": "Applying differential privacy with adaptive noise scaling to federated learning models trained on 3D medical imaging data (e.g., MRI or CT scans) will preserve diagnostic utility (measured by Dice similarity coefficient for segmentation tasks) while maintaining a privacy budget (ε) below 5, compared to non-private baselines. | Adaptive noise scaling will achieve a Dice similarity coefficient within 5% of the non-private baseline while keeping ε ≤ 5, whereas fixed noise scaling will degrade utility by >10% or require ε > 10 to maintain comparable utility. | Train a 3D U-Net model on federated datasets of MRI or CT scans (e.g., BraTS or Medical Segmentation Decathlon) using FL with DP-SGD. Compare adaptive noise scaling (e.g., based on gradient magnitude) against fixed noise scaling across varying ε values. | Dice similarity coefficient (%), membership inference attack success rate (%), and privacy budget (ε).",
       "tasks": [],
       "resultSummary": {
         "finalStatus": "FAILURE",
         "validation": {
           "status": "INVALID",
           "issues": [
-            "No tasks have been approved (0/7 completed).",
-            "No computed metrics available for evaluation.",
-            "Execution summary indicates TASK-007 is still in progress, preventing full validation.",
-            "No verified task outputs to validate against the hypothesis."
+            "No tasks approved (0/7 completed).",
+            "Missing critical outputs for metric evaluation (Dice similarity coefficient, membership inference attack success rate, privacy budget ε).",
+            "Failed task TASK_005 (likely privacy budget validation or attack simulation).",
+            "Incomplete task TASK_004 (may affect baseline comparison)."
           ]
         },
         "metrics": {
@@ -308,11 +308,19 @@
         },
         "consistency": {
           "status": "INCONSISTENT",
-          "details": "Cannot assess consistency due to absence of validated results. No comparison possible with the hypothesis or baseline."
+          "details": "No results to compare against hypothesis. Expected outcomes (Dice coefficient within 5% of baseline, ε ≤ 5) cannot be verified."
         },
         "anomalies": [
-          "No task outputs available for anomaly detection.",
-          "Missing critical performance metrics (accuracy, F1-score, AUC)."
+          {
+            "type": "MISSING_DATA",
+            "description": "No computed metrics or task outputs available for validation.",
+            "severity": "CRITICAL"
+          },
+          {
+            "type": "TASK_FAILURE",
+            "description": "TASK_005 failed (privacy validation step).",
+            "severity": "HIGH"
+          }
         ]
       }
     },
@@ -330,26 +338,25 @@
       "findings": []
     },
     "payoutExecutions": [],
-    "publishedAt": "2026-03-21T19:40:09.761Z"
+    "publishedAt": "2026-03-21T20:37:45.761Z"
   },
   {
-    "experimentId": "EXP-1774123790793-558OPA",
-    "manifestHash": "a1174bb9c87abd168a7b7cf91e950adbf998e4fd99ee73857db5cde4697cc267",
+    "experimentId": "EXP-1774201942077-M733O7",
+    "manifestHash": "dd290825a16269f1635a35a00308e3bb58c96de4b201fc95926068e6ae81ca0f",
     "manifest": {
-      "experimentId": "EXP-1774123790793-558OPA",
-      "generatedAt": "2026-03-21T20:12:05.337Z",
-      "hypothesis": "Heterogeneous ensemble models (e.g., combining logistic regression, random forest, and gradient boosting) will outperform homogeneous ensembles (e.g., multiple random forests) in credit scoring tasks when trained on class-imbalanced datasets, as measured by AUC-ROC and F1-score. | Heterogeneous ensembles will achieve at least 3-5% higher AUC-ROC and F1-score compared to homogeneous ensembles under severe class imbalance (e.g., 99:1). | Train and evaluate homogeneous (e.g., 5x random forest) and heterogeneous (e.g., logistic regression + random forest + XGBoost) ensembles on public credit scoring datasets (e.g., German Credit Data, Home Equity Line of Credit (HELOC)) with synthetically induced class imbalance. Use 5-fold cross-validation and repeat experiments 10 times for statistical significance. | AUC-ROC, F1-score, precision-recall curves.",
+      "experimentId": "EXP-1774201942077-M733O7",
+      "generatedAt": "2026-03-22T17:54:40.080Z",
+      "hypothesis": "Applying differential privacy with noise calibrated to the sensitivity of 3D medical imaging features (e.g., volumetric textures in MRI) will preserve model utility (measured by Dice similarity coefficient) within 5% of non-private FL baselines while achieving a privacy budget (ε) of ≤5 for datasets with ≥10,000 samples. | Model utility degradation of ≤5% compared to non-private FL, with membership inference attack success rates reduced to ≤55% (random guessing baseline: 50%). | Federated learning setup with 5-10 simulated hospitals, each holding 3D MRI/CT datasets (e.g., BraTS or Medical Segmentation Decathlon). Compare DP-FL with non-private FL and centralized training baselines. | Dice similarity coefficient for segmentation accuracy; membership inference attack success rate for privacy leakage.",
       "tasks": [],
       "resultSummary": {
         "finalStatus": "FAILURE",
         "validation": {
           "status": "INVALID",
           "issues": [
-            "No tasks marked as approved (0/7).",
-            "Critical task TASK_006 failed, preventing metric computation.",
-            "TASK_005 remains in progress, blocking result aggregation.",
-            "No computed metrics available for validation.",
-            "Output formats and completeness cannot be verified due to missing data."
+            "Insufficient completed tasks (0/7) to validate results",
+            "Failed task TASK-004 may impact dependent validation steps",
+            "No computed metrics available for evaluation",
+            "Incomplete experiment execution (TASK-003 in progress)"
           ]
         },
         "metrics": {
@@ -359,26 +366,26 @@
         },
         "consistency": {
           "status": "INCONSISTENT",
-          "details": "No results to evaluate consistency. Hypothesis cannot be tested without completed tasks."
+          "details": "Cannot assess consistency due to missing task outputs and metrics. No baseline comparison possible."
         },
         "anomalies": [
           {
-            "type": "SYSTEMIC",
-            "description": "Zero approved tasks despite execution summary indicating partial completion.",
-            "severity": "CRITICAL"
+            "type": "EXECUTION_FAILURE",
+            "description": "Task TASK-004 failed during execution",
+            "impact": "Potential gap in differential privacy calibration or attack simulation results"
           },
           {
-            "type": "PROCEDURAL",
-            "description": "Failed task TASK_006 likely involved metric computation or validation steps.",
-            "severity": "HIGH"
+            "type": "DATA_UNAVAILABLE",
+            "description": "No Dice similarity coefficients or membership inference attack success rates reported",
+            "impact": "Cannot evaluate hypothesis claims"
           }
         ]
       }
     },
     "signature": {
-      "algorithm": "ed25519",
-      "signature": "1f694f1554fc163366009ffe8ffd4d1cb291d6aeb0b365d46205d22be48a744017e8695d8efac4b247a35bdf73504a9c4d3254f0e5d03e8d98261e38c5b7374b",
-      "signer": "0.0.8320076"
+      "algorithm": "sha256",
+      "signature": null,
+      "signer": "signature-failed"
     },
     "computedMetrics": {
       "metrics": {
@@ -389,6 +396,110 @@
       "findings": []
     },
     "payoutExecutions": [],
-    "publishedAt": "2026-03-21T20:12:05.340Z"
+    "publishedAt": "2026-03-22T17:54:40.081Z"
+  },
+  {
+    "experimentId": "EXP-1774204400517-OT1QFD",
+    "manifestHash": "a571956287be5f6cba8ed6e5c9a3721efe3279e10c4ced081f8bf1d6a36962ca",
+    "manifest": {
+      "experimentId": "EXP-1774204400517-OT1QFD",
+      "generatedAt": "2026-03-22T18:35:27.327Z",
+      "hypothesis": "Applying differential privacy with adaptive noise scaling to 3D medical imaging data in federated learning will preserve diagnostic utility (e.g., segmentation accuracy) while maintaining a predefined privacy budget (ε ≤ 1.0) compared to static noise addition. | Adaptive noise scaling will achieve ≥90% of the baseline segmentation accuracy (no DP) at ε = 1.0, while static noise addition will degrade accuracy by ≥15% at the same ε. | Federated learning framework (e.g., Flower or PySyft) with 3D medical imaging datasets (e.g., BraTS for brain tumor segmentation). Compare adaptive DP (e.g., gradient clipping + noise scaling based on local data sensitivity) against static DP (fixed noise multiplier). | Dice coefficient for segmentation accuracy, attack success rate for privacy leakage, and computational overhead (training time per epoch)",
+      "tasks": [],
+      "resultSummary": {
+        "finalStatus": "FAILURE",
+        "validation": {
+          "status": "INVALID",
+          "issues": [
+            "No tasks approved for result aggregation (0/7 completed).",
+            "Failed task TASK_005 may contain critical validation data (e.g., privacy leakage metrics).",
+            "In-progress tasks TASK_006 and TASK_007 are required for full hypothesis evaluation (e.g., computational overhead).",
+            "No computed metrics available in verified artifact summary."
+          ]
+        },
+        "metrics": {
+          "accuracy": "N/A",
+          "loss": "N/A",
+          "improvement": "N/A"
+        },
+        "consistency": {
+          "status": "INCONSISTENT",
+          "details": "Cannot evaluate consistency due to missing task outputs. Hypothesis requires comparison of adaptive vs. static DP across ε values (0.1, 0.5, 1.0, 2.0), but no segmentation accuracy or privacy leakage data is available."
+        },
+        "anomalies": [
+          {
+            "type": "DATA_AVAILABILITY",
+            "description": "Zero tasks approved for result aggregation, violating minimum completeness threshold (4/7 tasks required for partial validation).",
+            "severity": "CRITICAL"
+          }
+        ]
+      }
+    },
+    "signature": {
+      "algorithm": "sha256",
+      "signature": null,
+      "signer": "signature-failed"
+    },
+    "computedMetrics": {
+      "metrics": {
+        "accuracy": null,
+        "loss": null,
+        "improvement": null
+      },
+      "findings": []
+    },
+    "payoutExecutions": [],
+    "publishedAt": "2026-03-22T18:35:27.330Z"
+  },
+  {
+    "experimentId": "EXP-1774204587569-X0XIJ3",
+    "manifestHash": "df1ba1cd72052c48a25465a4e5713a9bbd572d5e3956bd6596728541f78bc8ff",
+    "manifest": {
+      "experimentId": "EXP-1774204587569-X0XIJ3",
+      "generatedAt": "2026-03-22T18:38:04.014Z",
+      "hypothesis": "If a systematic literature review framework is applied to the generic query 'what about this,' then it will identify at least three distinct research domains (e.g., healthcare, social sciences, policy) where the question has been implicitly addressed, enabling domain-specific hypothesis generation. | At least 3 domains will be identified, each with at least 1 domain-specific hypothesis grounded in prior work. | Use Semantic Scholar API to retrieve 100+ papers with the query 'what about this' or similar phrasing, apply BAAI/BGE embeddings to cluster papers by domain, and manually validate clusters for thematic coherence. | Number of domains identified, specificity of hypotheses (qualitative assessment), and citation count of supporting literature.",
+      "tasks": [],
+      "resultSummary": {
+        "finalStatus": "FAILURE",
+        "validation": {
+          "status": "INVALID",
+          "issues": [
+            "No tasks have been approved for validation (0/7).",
+            "No computed metrics available for evaluation.",
+            "No task outputs provided for consistency or anomaly checks.",
+            "Missing domain identification results and hypothesis specificity assessments."
+          ]
+        },
+        "metrics": {
+          "accuracy": "N/A",
+          "loss": "N/A",
+          "improvement": "N/A"
+        },
+        "consistency": {
+          "status": "INCONSISTENT",
+          "details": "No results available to assess consistency with the hypothesis. Expected at least 3 domains identified with domain-specific hypotheses, but no data was provided."
+        },
+        "anomalies": [
+          "No task outputs submitted for analysis.",
+          "No clusters or domains identified despite experiment completion claims.",
+          "Missing manual validation by domain experts."
+        ]
+      }
+    },
+    "signature": {
+      "algorithm": "sha256",
+      "signature": null,
+      "signer": "signature-failed"
+    },
+    "computedMetrics": {
+      "metrics": {
+        "accuracy": null,
+        "loss": null,
+        "improvement": null
+      },
+      "findings": []
+    },
+    "payoutExecutions": [],
+    "publishedAt": "2026-03-22T18:38:04.014Z"
   }
 ]
