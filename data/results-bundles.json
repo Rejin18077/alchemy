@@ -119,5 +119,16 @@
         "signer": "0.0.8320076"
       }
     }
+  ],
+  [
+    "b637b4a94e0710c7ff8fb601284c2b858483a1024525c73ca58c90d2a5e3c720",
+    {
+      "manifestJson": "{\n  \"experimentId\": \"EXP-1774302439618-ZOARGA\",\n  \"generatedAt\": \"2026-03-23T21:49:31.224Z\",\n  \"hypothesis\": \"RLHF alignment techniques optimized for natural language generation (NLG) will underperform in code generation tasks due to the structural and syntactic constraints of programming languages, leading to lower functional correctness and adherence to specifications. | Code-specific RLHF adaptations will outperform NLG-optimized techniques by at least 15% in functional correctness and 20% in specification adherence. | Fine-tune a base code generation model (e.g., CodeGen or StarCoder) using (1) standard RLHF (NLG-optimized) and (2) a syntax-aware RLHF variant with reward models trained on code-specific feedback. Evaluate both models on HumanEval/MBPP and a custom dataset of edge-case prompts. | Pass@k (k=1, 5, 10) on HumanEval/MBPP, custom rubric scores for specification adherence (0-1 scale)\",\n  \"tasks\": [],\n  \"resultSummary\": {\n    \"finalStatus\": \"FAILURE\",\n    \"validation\": {\n      \"status\": \"INVALID\",\n      \"issues\": [\n        \"No tasks completed (0/7). No outputs available for validation.\",\n        \"Failed task TASK-003 may have critical dependencies for result aggregation.\",\n        \"In-progress task TASK-002 suggests incomplete experimental pipeline.\"\n      ]\n    },\n    \"metrics\": {\n      \"accuracy\": \"N/A\",\n      \"loss\": \"N/A\",\n      \"improvement\": \"N/A\"\n    },\n    \"consistency\": {\n      \"status\": \"INCONSISTENT\",\n      \"details\": \"Cannot evaluate consistency due to absence of experimental outputs. Hypothesis remains untested.\"\n    },\n    \"anomalies\": [\n      {\n        \"type\": \"PROCEDURAL\",\n        \"description\": \"Experiment halted before generating any results. No data to analyze for anomalies.\",\n        \"severity\": \"CRITICAL\"\n      }\n    ]\n  }\n}",
+      "signature": {
+        "algorithm": "ed25519",
+        "signature": "b7705a78d832eef59ddf1b0ce05d9a42c29eef64a3e5b067ef0e3d27b159e47128bb836f91768e979e7451dff0b52b6503aaeab55bcae844fbaab13104e265c0",
+        "signer": "0.0.8320076"
+      }
+    }
   ]
 ]

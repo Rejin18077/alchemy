@@ -64,15 +64,7 @@
       <button id="register-agent-btn" class="secondary-btn">Register Agent via HOL</button>
     </div>
 
-    <!-- Natural Language Chat -->
-    <div class="control-section">
-      <label>Natural Language Chat</label>
-      <div id="chat-log" class="chat-log">
-        <div class="empty-state">Ask the agent anything about the experiment or the protocol.</div>
-      </div>
-      <textarea id="chat-input" placeholder="Ask about experiments, HCS-10, HOL registration, or this dApp…"></textarea>
-      <button id="chat-send-btn" class="secondary-btn">Send Message</button>
-    </div>
+
 
     <!-- Funding Marketplace -->
     <div class="section-divider">◆ Funding Marketplace</div>
@@ -356,7 +348,27 @@
   <div class="success-modal-body">Results published to HCS. Publication NFT minted. Replication verified.</div>
 </div>
 
+<!-- Chat FAB -->
+<button id="chat-fab-btn" class="chat-fab" onclick="toggleChatModal()">💬 Chat</button>
+
+<!-- Chat Modal -->
+<div id="chat-modal-overlay" class="chat-modal-overlay" onclick="toggleChatModal()"></div>
+<div id="chat-modal" class="chat-modal">
+  <div class="chat-modal-header">
+    <span>Natural Language Chat</span>
+    <button onclick="toggleChatModal()" class="close-modal-btn">✕</button>
+  </div>
+  <div id="chat-log" class="chat-log">
+    <div class="empty-state">Ask the agent anything about the experiment or the protocol.</div>
+  </div>
+  <div class="chat-modal-input-area">
+    <textarea id="chat-input" placeholder="Ask about experiments, HCS-10, HOL registration, or this dApp…"></textarea>
+    <button id="chat-send-btn" class="secondary-btn">Send Message</button>
+  </div>
+</div>
+
 <!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="agents.js"></script>
 <script src="js/config.js"></script>
 <script src="js/wallet.js"></script>

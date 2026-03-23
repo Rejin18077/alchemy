@@ -248,6 +248,12 @@ header::before {
   min-height: 0;
 }
 
+.chat-pinned {
+  flex-shrink: 0;
+  border-top: 1px solid var(--glass-border);
+  background: var(--glass-1);
+}
+
 /* Section divider */
 .section-divider {
   padding: 11px 20px;
@@ -324,7 +330,6 @@ header::before {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  grid-row: 2;
   background: var(--bg);
 }
 

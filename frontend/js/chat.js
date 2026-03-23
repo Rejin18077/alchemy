@@ -14,12 +14,18 @@ function renderChatHistory() {
     return;
   }
 
-  el.innerHTML = state.chatHistory.slice(-10).map(entry => `
-    <div class="chat-msg">
-      <div class="chat-role">${escapeHtml(entry.role || 'assistant')}</div>
-      <div class="chat-content">${escapeHtml(entry.content || '')}</div>
-    </div>
-  `).join('');
+  el.innerHTML = state.chatHistory.slice(-10).map(entry => {
+    let contentHTML = escapeHtml(entry.content || '');
+    if (typeof marked !== 'undefined') {
+      contentHTML = marked.parse(entry.content || '');
+    }
+    return `
+      <div class="chat-msg">
+        <div class="chat-role">${escapeHtml(entry.role || 'assistant')}</div>
+        <div class="chat-content markdown-body">${contentHTML}</div>
+      </div>
+    `;
+  }).join('');
   el.scrollTop = el.scrollHeight;
 }
 
@@ -60,6 +66,18 @@ async function sendChatMessage() {
     if (btn) {
       btn.disabled = false;
       btn.textContent = 'Send Message';
+    }
+  }
+}
+
+function toggleChatModal() {
+  const modal = document.getElementById('chat-modal');
+  const overlay = document.getElementById('chat-modal-overlay');
+  if (modal && overlay) {
+    modal.classList.toggle('visible');
+    overlay.classList.toggle('visible');
+    if (modal.classList.contains('visible')) {
+      document.getElementById('chat-input')?.focus();
     }
   }
 }
