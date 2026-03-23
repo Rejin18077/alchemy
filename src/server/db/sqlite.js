@@ -11,61 +11,59 @@ let lastPersistAt = null;
 
 function promisifyRun(database, sql, params = []) {
   return new Promise((resolve, reject) => {
-    database.run(sql, params, function onRun(err) {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(this);
-    });
+    try {
+      const stmt = database.prepare(sql);
+      const info = stmt.run(params);
+      resolve(info);
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
 function promisifyGet(database, sql, params = []) {
   return new Promise((resolve, reject) => {
-    database.get(sql, params, (err, row) => {
-      if (err) {
-        reject(err);
-        return;
-      }
+    try {
+      const stmt = database.prepare(sql);
+      const row = stmt.get(params);
       resolve(row);
-    });
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
 function promisifyAll(database, sql, params = []) {
   return new Promise((resolve, reject) => {
-    database.all(sql, params, (err, rows) => {
-      if (err) {
-        reject(err);
-        return;
-      }
+    try {
+      const stmt = database.prepare(sql);
+      const rows = stmt.all(params);
       resolve(rows);
-    });
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
 function openDatabase(filename) {
   return new Promise((resolve, reject) => {
-    const database = new Database(filename, (err) => {
-      if (err) {
-        reject(err);
-        return;
-      }
+    try {
+      const database = new Database(filename);
       resolve(database);
-    });
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
 function closeDatabase(database) {
   return new Promise((resolve, reject) => {
-    database.close((err) => {
-      if (err) {
-        reject(err);
-        return;
-      }
+    try {
+      database.close();
       resolve();
-    });
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
