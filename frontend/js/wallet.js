@@ -35,8 +35,8 @@ async function connectWallet() {
 
     if (!accountId) {
       accountId = prompt('Enter your Hedera Account ID (e.g. 0.0.12345):');
-      if (!accountId || !/^0\.0\.\d+$/.test(accountId.trim())) {
-        throw new Error('Invalid Hedera account ID format.');
+      if (!accountId || accountId.trim().length === 0) {
+        throw new Error('Hedera account ID cannot be empty');
       }
       accountId = accountId.trim();
     }

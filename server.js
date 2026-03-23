@@ -1,3 +1,4 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Bypass 'unable to verify the first certificate'
 require('dotenv').config();
 const { validateEnv } = require('./src/server/core/validate-env');
 validateEnv(); // Run startup validation before anything else

@@ -143,7 +143,7 @@ function validateEnv() {
   }
 
   if (warnings.length > 0) {
-    console.warn(`\x1b[33m⚠ ${warnings.length} optional environment variable(s) are not set. Some features will run in simulated mode.\x1b[0m\n`);
+    console.warn(`\x1b[33m⚠ ${warnings.length} optional environment variable(s) are not set. Wait, this project now uses strict real APIs instead of simulated mode, so expect failures if features are invoked.\x1b[0m\n`);
   }
 
   return true;

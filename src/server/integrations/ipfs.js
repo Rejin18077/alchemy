@@ -59,12 +59,7 @@ async function testPinata() {
  */
 async function pinJsonToIpfs(data, name = 'alchemy-publication') {
   if (!isPinataConfigured()) {
-    console.log(`[IPFS] Simulated pin for: ${name}`);
-    return {
-      pinned: false,
-      mode: 'simulated',
-      error: 'Pinata not configured — add PINATA_API_KEY and PINATA_API_SECRET to .env'
-    };
+    throw new Error('Simulation disabled: Pinata not configured — add PINATA_API_KEY and PINATA_API_SECRET to .env');
   }
 
   try {

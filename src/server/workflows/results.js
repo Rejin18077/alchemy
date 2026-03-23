@@ -330,10 +330,10 @@ async function updatePublicationNftReputationOnChain(resultsData, replicationSum
   const tokenId = resultsData?.hedera_record?.nft_token_id || resultsData?.registry_record?.nft_token_id || null;
   const serials = resultsData?.hedera_record?.nft_serials || resultsData?.registry_record?.nft_serials || [];
   if (!sdk || mode.hts !== 'enabled') {
-    return { mode: 'simulated', updated: false, reason: 'HTS not fully configured' };
+    throw new Error('Simulation disabled: HTS not fully configured');
   }
   if (!tokenId || !Array.isArray(serials) || !serials.length) {
-    return { mode: 'simulated', updated: false, reason: 'NFT token id or serials not available for reputation update' };
+    throw new Error('Simulation disabled: NFT token id or serials not available for reputation update');
   }
 
   const { client, privateKey } = createHederaClient(sdk);
@@ -360,11 +360,7 @@ async function updatePublicationNftReputationOnChain(resultsData, replicationSum
       status: receipt.status.toString()
     };
   } catch (err) {
-    return {
-      mode: 'simulated',
-      updated: false,
-      reason: err.message
-    };
+    throw new Error(`Simulation disabled: NFT update failed - ${err.message}`);
   } finally {
     client.close();
   }

@@ -265,11 +265,17 @@ async function runPipeline() {
       state.results.results = result.parsed || result;
       updateAgentOutput('results', result);
 
-      await logToHCS({
+      const hcsLogRes = await logToHCS({
         message_id: `msg-res-${Date.now()}`, agent_id: AGENTS.results.id, agent_type: 'RESULTS',
         action_type: 'RESULT_PUBLISHED', experiment_id: state.experimentId,
         payload: { status: result.parsed?.final_status, metrics: result.parsed?.metrics, nft_token_id: result.parsed?.hedera_record?.nft_token_id }
       });
+      if (hcsLogRes?.entry?.hedera?.hts?.token_id) {
+        state.results.results.hedera_record = {
+          nft_token_id: hcsLogRes.entry.hedera.hts.token_id,
+          nft_serials: hcsLogRes.entry.hedera.hts.serials || []
+        };
+      }
       const rep = computeStageReputation(topic, 'results', result, { peerReviewDecision: state.results.peerReview?.final_decision });
       await updateHOL({ agent_id: AGENTS.results.id, reputation_score: rep.reputation_score, trust_level: rep.trust_level, contributions: [state.experimentId], owned_experiments: [state.experimentId] });
     });

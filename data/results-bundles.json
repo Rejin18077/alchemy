@@ -108,5 +108,16 @@
         "signer": "0.0.8320076"
       }
     }
+  ],
+  [
+    "eecf3de4839991b0b5fa229216f687d352ba1cde873166cdaeb483eee9dd8b75",
+    {
+      "manifestJson": "{\n  \"experimentId\": \"EXP-1774300816358-DT5FUZ\",\n  \"generatedAt\": \"2026-03-23T21:22:49.091Z\",\n  \"hypothesis\": \"For small-scale image datasets (e.g., CIFAR-10, MNIST), local attention mechanisms in Vision Transformers (ViTs) will underperform compared to the implicit attention-like behavior of convolutional kernels in CNNs, as measured by top-1 accuracy, due to ViTs' lack of inherent spatial inductive biases. | CNNs will achieve 3-5% higher top-1 accuracy than ViTs on small-scale datasets due to their implicit spatial hierarchies. | Train ViT and CNN models (e.g., ResNet-50) on CIFAR-10 and MNIST datasets under identical conditions (e.g., learning rate, batch size, optimizer). Compare top-1 accuracy after convergence. | Top-1 accuracy (%)\",\n  \"tasks\": [],\n  \"resultSummary\": {\n    \"finalStatus\": \"FAILURE\",\n    \"validation\": {\n      \"status\": \"INVALID\",\n      \"issues\": [\n        \"Insufficient completed tasks (0/7) to validate results\",\n        \"Critical task TASK-004 (model training) failed\",\n        \"No computed metrics available for evaluation\",\n        \"No task outputs provided for validation\"\n      ]\n    },\n    \"metrics\": {\n      \"accuracy\": \"N/A\",\n      \"loss\": \"N/A\",\n      \"improvement\": \"N/A\"\n    },\n    \"consistency\": {\n      \"status\": \"INCONSISTENT\",\n      \"details\": \"No results available to assess consistency with hypothesis. Experiment execution incomplete.\"\n    },\n    \"anomalies\": [\n      \"No task outputs received for analysis\",\n      \"Critical failure in model training phase (TASK-004)\",\n      \"Missing computed metrics for all dependent variables\"\n    ]\n  }\n}",
+      "signature": {
+        "algorithm": "ed25519",
+        "signature": "a1ac98187850449ff05acaf27eac2c67003e70c8187a44a9e34b161be354491024818be8d41db882f4ca7dde801a1e25011d58ed309e724c53a72cc2391e74c8",
+        "signer": "0.0.8320076"
+      }
+    }
   ]
 ]

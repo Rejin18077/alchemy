@@ -32,7 +32,7 @@ async function submitMessageToHCS(entry) {
   const sdk = loadHederaSdk();
   const mode = getHederaMode();
   if (!sdk || mode.hcs !== 'enabled') {
-    return { mode: 'simulated', submitted: false, reason: 'HCS not fully configured' };
+    throw new Error("Simulation disabled: HCS not fully configured. Set HEDERA_ACCOUNT_ID, HEDERA_PRIVATE_KEY, and HCS_TOPIC_ID.");
   }
 
   const { client } = createHederaClient(sdk);
@@ -106,7 +106,7 @@ async function syncHTSForEntry(entry) {
   const sdk = loadHederaSdk();
   const mode = getHederaMode();
   if (!sdk || mode.hts !== 'enabled') {
-    return { mode: 'simulated', executed: false, reason: 'HTS not fully configured' };
+    throw new Error("Simulation disabled: HTS not fully configured. Set Hedera credentials.");
   }
 
   const { client, privateKey } = createHederaClient(sdk);

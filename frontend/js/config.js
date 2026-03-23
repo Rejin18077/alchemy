@@ -115,12 +115,14 @@ async function callAgent(agentKey, userMessage, maxTokens = 4096, extra = {}) {
 }
 
 async function logToHCS(entry) {
-  await fetch(`${API_BASE}/api/hcs/log`, {
+  const res = await fetch(`${API_BASE}/api/hcs/log`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(entry)
   });
+  const data = await res.json();
   await refreshHCSLog();
+  return data;
 }
 
 async function updateHOL(data) {

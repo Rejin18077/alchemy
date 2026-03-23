@@ -551,5 +551,56 @@
     },
     "payoutExecutions": [],
     "publishedAt": "2026-03-23T20:53:06.595Z"
+  },
+  {
+    "experimentId": "EXP-1774300816358-DT5FUZ",
+    "manifestHash": "eecf3de4839991b0b5fa229216f687d352ba1cde873166cdaeb483eee9dd8b75",
+    "manifest": {
+      "experimentId": "EXP-1774300816358-DT5FUZ",
+      "generatedAt": "2026-03-23T21:22:49.091Z",
+      "hypothesis": "For small-scale image datasets (e.g., CIFAR-10, MNIST), local attention mechanisms in Vision Transformers (ViTs) will underperform compared to the implicit attention-like behavior of convolutional kernels in CNNs, as measured by top-1 accuracy, due to ViTs' lack of inherent spatial inductive biases. | CNNs will achieve 3-5% higher top-1 accuracy than ViTs on small-scale datasets due to their implicit spatial hierarchies. | Train ViT and CNN models (e.g., ResNet-50) on CIFAR-10 and MNIST datasets under identical conditions (e.g., learning rate, batch size, optimizer). Compare top-1 accuracy after convergence. | Top-1 accuracy (%)",
+      "tasks": [],
+      "resultSummary": {
+        "finalStatus": "FAILURE",
+        "validation": {
+          "status": "INVALID",
+          "issues": [
+            "Insufficient completed tasks (0/7) to validate results",
+            "Critical task TASK-004 (model training) failed",
+            "No computed metrics available for evaluation",
+            "No task outputs provided for validation"
+          ]
+        },
+        "metrics": {
+          "accuracy": "N/A",
+          "loss": "N/A",
+          "improvement": "N/A"
+        },
+        "consistency": {
+          "status": "INCONSISTENT",
+          "details": "No results available to assess consistency with hypothesis. Experiment execution incomplete."
+        },
+        "anomalies": [
+          "No task outputs received for analysis",
+          "Critical failure in model training phase (TASK-004)",
+          "Missing computed metrics for all dependent variables"
+        ]
+      }
+    },
+    "signature": {
+      "algorithm": "ed25519",
+      "signature": "a1ac98187850449ff05acaf27eac2c67003e70c8187a44a9e34b161be354491024818be8d41db882f4ca7dde801a1e25011d58ed309e724c53a72cc2391e74c8",
+      "signer": "0.0.8320076"
+    },
+    "computedMetrics": {
+      "metrics": {
+        "accuracy": null,
+        "loss": null,
+        "improvement": null
+      },
+      "findings": []
+    },
+    "payoutExecutions": [],
+    "publishedAt": "2026-03-23T21:22:49.101Z"
   }
 ]

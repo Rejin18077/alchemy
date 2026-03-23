@@ -156,8 +156,7 @@ function startHcsListener(intervalMs = 15000) {
 
   const mode = getHederaMode();
   if (mode.hcs !== 'enabled') {
-    console.log('[HCS Listener] Skipping — HCS is in simulated mode. Configure HEDERA_ACCOUNT_ID, HEDERA_PRIVATE_KEY, and HCS_TOPIC_ID to enable.');
-    return;
+    throw new Error('Simulation disabled: HCS not fully configured. Configure HEDERA_ACCOUNT_ID, HEDERA_PRIVATE_KEY, and HCS_TOPIC_ID to enable.');
   }
 
   console.log(`[HCS Listener] Starting — polling every ${intervalMs / 1000}s for inbound messages.`);

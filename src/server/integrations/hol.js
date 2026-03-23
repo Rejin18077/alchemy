@@ -214,16 +214,7 @@ async function ensureHolAgentRegistration(baseUrl) {
  */
 async function discoverAgentsFromRegistry(options = {}) {
   if (!hasConfiguredValue(process.env.REGISTRY_BROKER_API_KEY, ['rbk_...'])) {
-    return [
-      {
-        id: 'simulated-agent-001',
-        name: 'Simulated Peer Reviewer',
-        alias: 'peer_reviewer_sim',
-        capabilities: ['KNOWLEDGE_RETRIEVAL', 'SUMMARIZATION_EXTRACTION'],
-        reachability: { hcs10: null, rest: null },
-        simulated: true
-      }
-    ];
+    throw new Error('Simulation disabled: REGISTRY_BROKER_API_KEY not configured.');
   }
 
   try {

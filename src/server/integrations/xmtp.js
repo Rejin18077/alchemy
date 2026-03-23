@@ -93,13 +93,7 @@ async function sendXmtpMessage(recipientAddress, payload) {
   const content = typeof payload === 'string' ? payload : JSON.stringify(payload, null, 2);
 
   if (!xmtpClient) {
-    // Simulated path — log and return
-    console.log(`[XMTP Simulated] → ${recipientAddress}: ${content.slice(0, 120)}`);
-    return {
-      sent: false,
-      mode: 'simulated',
-      reason: xmtpError || 'XMTP client not initialized'
-    };
+    throw new Error('Simulation disabled: XMTP client not initialized. XMTP_PRIVATE_KEY must be set.');
   }
 
   try {
@@ -137,7 +131,7 @@ async function sendXmtpMessage(recipientAddress, payload) {
  */
 async function dispatchTaskViaXmtp(task, worker, marketplace) {
   if (!worker?.xmtpAddress) {
-    return { sent: false, mode: 'simulated', reason: 'Worker has no xmtpAddress' };
+    throw new Error('Simulation disabled: Worker has no xmtpAddress');
   }
 
   const message = {
