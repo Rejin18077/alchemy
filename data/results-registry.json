@@ -654,5 +654,58 @@
     },
     "payoutExecutions": [],
     "publishedAt": "2026-03-23T21:49:31.226Z"
+  },
+  {
+    "experimentId": "EXP-1774303752323-KWSCOO",
+    "manifestHash": "470123e4e1153fdd24e4b2151cb16b1848221f43884a3975b78af299a9a23024",
+    "manifest": {
+      "experimentId": "EXP-1774303752323-KWSCOO",
+      "generatedAt": "2026-03-23T22:11:37.220Z",
+      "hypothesis": "Attention mechanisms in Vision Transformers (ViTs) will underperform convolutional operations in CNNs for fine-grained spatial feature extraction in low-data regimes (e.g., <10k training samples) due to the lack of local inductive biases, leading to higher error rates in small object detection tasks. | CNNs will achieve at least 10% higher mAP than ViTs in low-data regimes for small object detection tasks. | Train ViT and CNN (e.g., ResNet-50) models on a subset of COCO dataset (5k and 10k samples) with identical hyperparameters. Evaluate on a held-out test set focusing on small objects. | Mean Average Precision (mAP) at IoU threshold of 0.5, and computational efficiency (FLOPs, inference time).",
+      "tasks": [],
+      "resultSummary": {
+        "finalStatus": "FAILURE",
+        "validation": {
+          "status": "INVALID",
+          "issues": [
+            "No tasks approved (0/7 completed).",
+            "Missing critical outputs: TASK-006 (in progress), TASK-007 (failed).",
+            "No computed metrics available for evaluation.",
+            "Incomplete experiment execution prevents validation."
+          ]
+        },
+        "metrics": {
+          "accuracy": "N/A",
+          "loss": "N/A",
+          "improvement": "N/A"
+        },
+        "consistency": {
+          "status": "INCONSISTENT",
+          "details": "No results to compare against hypothesis. Expected mAP metrics for ViT vs. CNN are missing."
+        },
+        "anomalies": [
+          {
+            "type": "EXECUTION_FAILURE",
+            "description": "TASK-007 failed; TASK-006 incomplete. No small object detection results generated.",
+            "severity": "CRITICAL"
+          }
+        ]
+      }
+    },
+    "signature": {
+      "algorithm": "ed25519",
+      "signature": "43811159b29a6723e701abf1586802d081403831934a6864d59944939103360567c8c7ed3e7d36513cd74c95dc8b77f36b56d1f10464d45b7b51357ca389b06f",
+      "signer": "0.0.8320076"
+    },
+    "computedMetrics": {
+      "metrics": {
+        "accuracy": null,
+        "loss": null,
+        "improvement": null
+      },
+      "findings": []
+    },
+    "payoutExecutions": [],
+    "publishedAt": "2026-03-23T22:11:37.223Z"
   }
 ]

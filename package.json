@@ -4,6 +4,7 @@
   "description": "ALCHEMY — Autonomous Scientific Research Protocol on Hedera/HOL",
   "main": "server.js",
   "scripts": {
+    "postinstall": "npm rebuild sqlite3",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
