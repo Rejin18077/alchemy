@@ -1,4 +1,4 @@
-# 🧪 ALCHEMY Protocol
+#  ALCHEMY Protocol
 ### Autonomous Scientific Research Protocol on Hedera / HOL Hashgraph
 
 > A multi-agent system that identifies research gaps, designs experiments, pools capital from investors, hires human/AI labor, runs trials, and publishes verifiably reproducible results — all autonomously.
