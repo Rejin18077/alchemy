@@ -51,29 +51,116 @@ cp .env.example .env
 Open `.env` and fill in your values:
 
 ```env
-# REQUIRED — Get yours at https://console.mistral.ai/
+# ============================================================
+# ALCHEMY PROTOCOL — Environment Configuration
+# ============================================================
+# Copy this file to .env and fill in your values
+
+# -------------------------------------------------------
+# REQUIRED: Mistral API Key
+# Get yours at: https://console.mistral.ai/
+# -------------------------------------------------------
 MISTRAL_API_KEY=your_mistral_api_key_here
+
+# -------------------------------------------------------
+# OPTIONAL: Model selection (default: mistral-large-latest)
+# Options: mistral-large-latest | mistral-medium-latest | mistral-small-latest
+# mistral-large-latest  → best quality, higher cost
+# mistral-medium-latest → good balance
+# mistral-small-latest  → fastest, lowest cost
+# -------------------------------------------------------
 MODEL=mistral-large-latest
 
-# OPTIONAL — Semantic Scholar + BGE retrieval for the hypothesis agent
-# SEMANTIC_SCHOLAR_API_KEY=your_semantic_scholar_api_key_here
+# -------------------------------------------------------
+# OPTIONAL: Hypothesis Agent research stack
+# -------------------------------------------------------
+# Semantic Scholar API key is optional, but helps with rate limits
+SEMANTIC_SCHOLAR_API_KEY=your_semantic_scholar_api_key_here
 SEMANTIC_SCHOLAR_LIMIT=8
+
+# Real BGE embedding reranker used for paper ranking
 BGE_MODEL=BAAI/bge-small-en-v1.5
 
-# OPTIONAL — Ollama fallback if Mistral is unavailable
+# Ollama fallback for any agent when Mistral is unavailable
 OLLAMA_BASE_URL=http://127.0.0.1:11434
 OLLAMA_MODEL=llama3.1:8b
 
-# OPTIONAL — For real Hedera on-chain interactions
+# -------------------------------------------------------
+# OPTIONAL: HOL agent identity and discovery
+# -------------------------------------------------------
+AGENT_NAME=ALCHEMY Protocol Agent
+AGENT_ALIAS=alchemy_protocol
+AGENT_BIO=Autonomous scientific research agent with grounded literature retrieval, experiment orchestration, and Hedera-native logging.
+AGENT_CREATOR=ALCHEMY Protocol
+PUBLIC_APP_URL=http://localhost:3000
+AUTO_REGISTER_AGENT=false
+GUARDED_REGISTRY_BASE_URL=
+
+# -------------------------------------------------------
+# OPTIONAL: Hedera Testnet Credentials
+# Needed for real on-chain HCS/HTS interactions
+# Get a testnet account at: https://portal.hedera.com/
+# -------------------------------------------------------
 HEDERA_NETWORK=testnet
-HEDERA_ACCOUNT_ID=0.0.XXXXXXX
-HEDERA_PRIVATE_KEY=302e...
+HEDERA_ACCOUNT_ID=your_hedera_account_id_here
+HEDERA_PRIVATE_KEY=your_hedera_private_key_here
 HCS_TOPIC_ID=0.0.XXXXXXX
+
+# OPTIONAL: Reuse existing token IDs instead of auto-creating them
 HTS_EXP_TOKEN_ID=0.0.XXXXXXX
 HTS_PUBLICATION_TOKEN_ID=0.0.XXXXXXX
 
-# OPTIONAL — For real HOL agent registration
+# OPTIONAL: Fundraising marketplace configuration
+FUNDRAISING_TREASURY_ACCOUNT_ID=your_hedera_account_id_here
+FUNDRAISING_ACCEPTED_ASSET=HBAR
+FUNDRAISING_USD_PER_HBAR=0.10
+FUNDRAISING_MIN_CONTRIBUTION_USD=25
+FUNDRAISING_MATCHING_ENABLED=true
+FUNDRAISING_MATCHING_CAP_USD=2500
+FUNDRAISING_AUTO_RELEASE=false
+HEDERA_MIRROR_NODE_URL=https://testnet.mirrornode.hedera.com/api/v1
+
+# OPTIONAL: labor marketplace + XMTP configuration
+XMTP_ENABLED=false
+XMTP_TOPIC=
+LABOR_PAYOUT_ASSET=EXP
+LABOR_PAYOUT_MULTIPLIER=1
+LABOR_VERIFICATION_MODE=agent-review
+
+# OPTIONAL: Token metadata
+HTS_EXP_TOKEN_NAME=ALCHEMY EXP Token
+HTS_EXP_TOKEN_SYMBOL=EXP
+HTS_EXP_TOKEN_DECIMALS=0
+HTS_PUBLICATION_TOKEN_NAME=ALCHEMY Publication NFT
+HTS_PUBLICATION_TOKEN_SYMBOL=ALCHPUB
+
+# -------------------------------------------------------
+# OPTIONAL: HOL Registry Broker API Key
+# Get yours at: https://hol.org/registry
+# Needed for real agent registration on the HOL network
+# -------------------------------------------------------
 REGISTRY_BROKER_API_KEY=rbk_...
+
+# -------------------------------------------------------
+# Server Configuration
+# -------------------------------------------------------
+# OPTIONAL: XMTP A2A Messaging
+# -------------------------------------------------------
+XMTP_ENABLED=false
+XMTP_PRIVATE_KEY=your_xmtp_private_key_here
+XMTP_NETWORK=dev
+
+# -------------------------------------------------------
+# OPTIONAL: IPFS Publication Storage (Pinata)
+# -------------------------------------------------------
+PINATA_API_KEY=your_pinata_api_key_here
+PINATA_API_SECRET=your_pinata_api_secret_here
+
+# -------------------------------------------------------
+# Server Configuration
+# -------------------------------------------------------
+PORT=3000
+
 ```
 
 ### 3. Start the Server
